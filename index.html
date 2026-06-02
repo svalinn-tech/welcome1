@@ -1,0 +1,867 @@
+
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2970FF"/>
+<title>WinWinBot — Кабинет партнёра</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2970FF;--blue-dark:#1a56e8;--blue-light:#EEF3FF;
+  --green:#12B76A;--green-light:#ECFDF3;
+  --purple:#7C3AED;--purple-light:#F5F3FF;
+  --orange:#F79009;--orange-light:#FFF6E8;
+  --red:#F04438;--red-light:#FEF3F2;
+  --gray:#667085;--gray-light:#F9FAFB;--gray-2:#98A2B3;
+  --border:#E4E7EC;--text:#101828;--bg:#F5F7FF;--radius:14px;--sidebar:#0F172A;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--text);background:var(--bg)}
+a{text-decoration:none}
+button{font-family:inherit}
+.app{display:flex;min-height:100vh}
+.sidebar{width:262px;background:linear-gradient(180deg,#0F172A 0%,#111B34 100%);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;padding:18px 14px}
+.logo{display:flex;align-items:center;gap:10px;padding:8px 10px 18px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}
+.logo-mark{width:42px;height:42px;border-radius:11px;background:#1D4ED8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.logo-text{font-size:18px;font-weight:800;letter-spacing:.2px}
+.logo-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
+.side-nav{display:flex;flex-direction:column;gap:6px;flex:1}
+.side-link{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;color:rgba(255,255,255,.78);font-size:14px;font-weight:500;cursor:pointer;transition:.15s}
+.side-link:hover{background:rgba(255,255,255,.06);color:#fff}
+.side-link.active{background:#1D4ED8;color:#fff;box-shadow:0 6px 18px rgba(41,112,255,.25)}
+.side-ico{width:18px;text-align:center;flex-shrink:0}
+.sidebar-footer{padding:12px 10px;border-top:1px solid rgba(255,255,255,.08);font-size:12px;color:rgba(255,255,255,.55)}
+.main{flex:1;min-width:0}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:22px 28px 10px;gap:16px}
+.top-title h1{font-size:28px;font-weight:800;line-height:1.15}
+.top-title p{font-size:14px;color:var(--gray);margin-top:6px}
+.top-user{display:flex;align-items:center;gap:12px}
+.user-pill{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800}
+.level-badge{padding:4px 10px;border-radius:999px;background:var(--orange-light);color:#B54708;font-size:12px;font-weight:700}
+.content{padding:0 28px 40px}
+.page{display:none}
+.page.active{display:block}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.metric{padding:18px 18px 16px;border-radius:var(--radius);border:1px solid}
+.metric.blue{background:#EFF6FF;border-color:#BFDBFE}.metric.green{background:#ECFDF5;border-color:#A7F3D0}.metric.purple{background:#F5F3FF;border-color:#DDD6FE}.metric.orange{background:#FFF7ED;border-color:#FED7AA}
+.metric-label{font-size:13px;font-weight:600;margin-bottom:8px}.metric.blue .metric-label{color:#1D4ED8}.metric.green .metric-label{color:#027A48}.metric.purple .metric-label{color:#6D28D9}.metric.orange .metric-label{color:#B54708}
+.metric-value{font-size:30px;font-weight:800}.metric.blue .metric-value{color:#1D4ED8}.metric.green .metric-value{color:#027A48}.metric.purple .metric-value{color:#6D28D9}.metric.orange .metric-value{color:#B54708}
+.banner{background:linear-gradient(135deg,#1A56E8 0%,#2970FF 60%,#4F90FF 100%);border-radius:var(--radius);padding:26px 28px;color:#fff;position:relative;overflow:hidden;margin-bottom:18px}
+.banner:before{content:'✦';position:absolute;right:22px;top:-10px;font-size:92px;opacity:.07}
+.banner h2{font-size:24px;font-weight:800;margin-bottom:10px;max-width:760px}
+.banner p{font-size:14px;line-height:1.65;max-width:720px;opacity:.95}
+.banner-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:700;transition:.15s}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dark)}
+.btn-white{background:#fff;color:var(--blue)}.btn-white:hover{background:#ECF2FF}
+.btn-ghost{background:#fff;border:1px solid var(--border);color:var(--gray)}.btn-ghost:hover{color:var(--blue);border-color:#BFDBFE}
+.section-title{font-size:18px;font-weight:800;margin-bottom:4px}
+.section-sub{font-size:13px;color:var(--gray)}
+.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}
+.notice{background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.55}
+.notice a{color:#92400E;font-weight:700}
+.locked{background:#F2F4F7;border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start;color:var(--gray)}
+.locked strong{display:block;color:#344054;margin-bottom:3px}
+.kpi-row{margin-bottom:18px}
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.qa{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:7px;cursor:pointer;transition:.15s}
+.qa:hover{border-color:#BFDBFE;transform:translateY(-1px)}
+.qa-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--blue-light);font-size:18px}
+.qa-title{font-size:14px;font-weight:700}.qa-sub{font-size:12px;color:var(--gray);line-height:1.45}
+.table-wrap{overflow:auto}
+.table{width:100%;border-collapse:collapse;font-size:13px}
+.table th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray);text-align:left;padding:11px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
+.table td{padding:13px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.table tr:last-child td{border-bottom:none}
+.badge{display:inline-flex;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700}
+.badge.reg{background:var(--purple-light);color:#6D28D9}.badge.paid{background:#EFF6FF;color:#1D4ED8}.badge.active{background:#ECFDF3;color:#027A48}.badge.pending{background:#FFF6E8;color:#B54708}
+.progress-wrap{margin-top:12px}
+.progress-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:7px}.progress-top strong{font-weight:700}
+.progress{height:10px;background:#E4E7EC;border-radius:999px;overflow:hidden}.progress > div{height:100%;background:var(--blue);border-radius:999px}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.level{border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;background:#fff}.level.current{background:#EEF3FF;border-color:#BFDBFE}.level.gold{border-color:#FED7AA}
+.level-top{position:absolute;top:-10px;left:18px;padding:3px 10px;border-radius:999px;background:var(--blue);color:#fff;font-size:11px;font-weight:700}
+.level.gold .level-top{background:var(--orange)}
+.level-name{font-size:12px;color:var(--gray);margin-bottom:6px}.level-pct{font-size:34px;font-weight:800;color:var(--blue)}.level.gold .level-pct{color:#B54708}
+.level-meta{font-size:12px;color:var(--gray);margin-bottom:10px}.level-list{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#344054}
+.level-list div:before{content:'✓ ';color:var(--green);font-weight:700}
+.link-list{display:flex;flex-direction:column;gap:8px}.link-row{display:flex;align-items:center;gap:10px;background:var(--gray-light);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.link-flag{font-size:18px}.link-url{flex:1;color:var(--gray);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:#fff;color:var(--gray);cursor:pointer}.icon-btn:hover{color:var(--blue);border-color:#BFDBFE}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:13px;font-weight:600;color:#344054}.req{color:var(--red)}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;outline:none;background:#fff;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(41,112,255,.08)}
+input[readonly]{background:#F8FAFC;color:var(--gray)}
+.small{font-size:12px;color:var(--gray)}
+.upload{border:1.5px dashed var(--border);border-radius:10px;padding:14px 16px;color:var(--gray);cursor:pointer;background:#fff}.upload:hover{border-color:#BFDBFE;color:var(--blue)}
+.checks{display:flex;flex-direction:column;gap:10px;padding:16px;background:var(--gray-light);border-radius:12px;border:1px solid var(--border);margin-top:16px}.check{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5}
+.status{margin-top:14px;padding:13px 16px;border-radius:10px;font-size:14px;font-weight:700;display:none;align-items:center;gap:8px}.status.pending{background:#FFFBEB;color:#92400E;border:1px solid #FDE68A}.status.ok{background:#ECFDF3;color:#027A48;border:1px solid #A7F3D0}.status.reject{background:#FEF3F2;color:#B42318;border:1px solid #FECACA}
+.info-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.manager-card{background:linear-gradient(135deg,#F5F3FF,#EEF3FF);border:1px solid #DDD6FE}
+.news-list,.mat-list{display:flex;flex-direction:column;gap:10px}.news-item,.mat-item{padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:#fff}
+.news-item h4,.mat-item h4{font-size:14px;font-weight:700;margin-bottom:5px}.news-item p,.mat-item p{font-size:13px;color:var(--gray);line-height:1.5}
+.empty{padding:24px;text-align:center;color:var(--gray);font-size:14px;border:1.5px dashed var(--border);border-radius:12px;background:#fff}
+footer{text-align:center;padding:18px 20px 30px;font-size:12px;color:var(--gray)}
+@media(max-width:1180px){.grid-4,.quick-actions{grid-template-columns:repeat(2,1fr)}.levels{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.app{display:block}.sidebar{position:relative;height:auto;width:100%;border-bottom:1px solid rgba(255,255,255,.08)}.content,.topbar{padding-left:18px;padding-right:18px}.grid-4,.grid-3,.grid-2,.quick-actions,.form-grid{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}.user-pill{width:100%}}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  padding: 0;
+  margin: 0;
+  margin-top: 1px;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: var(--blue);
+}
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.check span {
+  flex: 1;
+}
+
+
+.verify-card {
+  border: 2px solid var(--blue) !important;
+  box-shadow: 0 12px 32px rgba(41, 112, 255, 0.1) !important;
+  position: relative;
+  overflow: hidden;
+  padding: 28px !important;
+}
+.verify-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--blue), #4F90FF);
+}
+.form-step {
+  grid-column: 1 / -1;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin-top: 16px;
+  margin-bottom: 6px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.form-step-num {
+  background: var(--blue-light);
+  color: var(--blue);
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+.submit-btn-large {
+  width: 100%;
+  padding: 18px;
+  font-size: 16px;
+  font-weight: 800;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue) 0%, #4F90FF 100%);
+  box-shadow: 0 6px 16px rgba(41, 112, 255, 0.2);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.submit-btn-large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(41, 112, 255, 0.3);
+}
+
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:#fff;border-radius:18px;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.18);position:relative}
+.modal-header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;z-index:2;border-radius:18px 18px 0 0}
+.modal-header::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue),#4F90FF);border-radius:18px 18px 0 0}
+.modal-title{display:flex;align-items:center;gap:14px}
+.modal-icon{width:46px;height:46px;background:var(--blue-light);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.modal-close{width:36px;height:36px;border-radius:9px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--gray);flex-shrink:0}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:24px}
+/* ONBOARDING STEPS */
+.onboard-step{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#fff}
+.onboard-step.done{background:#ECFDF3;border-color:#A7F3D0}
+.onboard-step.locked-step{opacity:.55}
+.onboard-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.onboard-dot.done{background:var(--green);color:#fff}
+.onboard-dot.pending{background:var(--blue);color:#fff}
+.onboard-dot.waiting{background:var(--orange-light);color:var(--orange)}
+.onboard-dot.locked{background:var(--gray-light);color:var(--gray)}
+.onboard-dot.complete{background:var(--green);color:#fff}
+/* DADATA hint */
+.dadata-hint{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;z-index:100;box-shadow:0 8px 16px rgba(0,0,0,.1);display:none}
+.dadata-item{padding:12px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid var(--border)}
+.dadata-item:last-child{border-bottom:none}
+.dadata-item:hover{background:var(--blue-light)}
+.dadata-name{font-weight:700;color:var(--text)}
+.dadata-meta{font-size:12px;color:var(--gray);margin-top:2px}
+.field-rel{position:relative}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">WWB</div>
+      <div>
+        <div class="logo-text">WinWinBot</div>
+        <div class="logo-sub">Кабинет партнёра</div>
+      </div>
+    </div>
+    <nav class="side-nav">
+      <div class="side-link active" data-page="about"><span class="side-ico">🏠</span><span>Главная</span></div>
+      <div class="side-link" data-page="network"><span class="side-ico">🔗</span><span>Промокоды и ссылки</span></div>
+      <div class="side-link" data-page="links"><span class="side-ico">🔗</span><span>Мои партнерские ссылки</span></div>
+      <div class="side-link" data-page="payouts"><span class="side-ico">📥</span><span>Выплаты</span></div>
+      <div class="side-link" data-page="materials"><span class="side-ico">🗂️</span><span>Промо-материалы</span></div>
+            <div class="side-link" data-page="manager"><span class="side-ico">💬</span><span>Связаться с менеджером</span></div>
+    </nav>
+    <div class="sidebar-footer">ID партнёра: 73257</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="top-title">
+        <h1>Добро пожаловать, Василий</h1>
+        <p>Ваш статус: <span id="headerStatusText" style="display:inline-flex;align-items:center;gap:6px;background:#FFF7ED;border:1px solid #FED7AA;color:#B54708;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700;margin-left:6px;box-shadow:0 1px 2px rgba(16,24,40,.04);">🕐 Заявка на рассмотрении</span></p>
+      </div>
+      <div class="top-user">
+        <div class="user-pill">
+          <div class="avatar">В</div>
+          <div>
+            <div style="font-size:14px;font-weight:700">Василий</div>
+            <div style="font-size:12px;color:var(--gray)">Партнёр WinWinBot</div>
+          </div>
+          <div class="level-badge" id="headerLevelBadge">На проверке</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <section class="page active" id="page-about">
+        <div class="banner">
+          <h2>Остался один шаг для становления партнёром WinWinBot</h2>
+          <p>Рады, что вы заинтересовались нашей партнёрской программой. Для полного доступа к партнёрской программе пройдите короткую верификацию и воспользуйтесь всеми преимуществами на максимум. Инструкция ниже.</p>
+          <div class="banner-actions">
+            <button class="btn btn-ghost" onclick="openVerifyModal()">📝 Пройти верификацию</button>
+          </div>
+        </div>
+
+        <div class="kpi-row grid-4">
+          <div class="metric blue"><div class="metric-label">Всего заработано</div><div class="metric-value" id="mTotal">0,00 ₽</div></div>
+          <div class="metric green"><div class="metric-label">Сумма к выплате</div><div class="metric-value" id="mBalance">0,00 ₽</div></div>
+          <div class="metric purple"><div class="metric-label">Всего клиентов</div><div class="metric-value" id="mRefs">0</div></div>
+          <div class="metric orange"><div class="metric-label">Всего партнёров</div><div class="metric-value" id="mPartners">0</div></div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px" id="onboardingCard">
+          <div class="section-head" style="margin-bottom:16px">
+            <div>
+              <div class="section-title">До становления партнёром осталось:</div>
+              <div class="section-sub">Показываем, что нужно для становления верифицированным партнёром</div>
+            </div>
+            <div id="onboardingPctBadge" style="font-size:22px;font-weight:800;color:var(--blue)">40%</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+            <div class="onboard-step done"><div class="onboard-dot done">✓</div><div><strong>Зарегистрировался в партнёрской программе</strong></div></div>
+            <div class="onboard-step" id="step2Row"><div class="onboard-dot pending" id="step2Dot">2</div><div id="step2Text"><strong>Заполнить анкету верификации</strong><div class="small" style="margin-top:3px">Заполните анкету, чтобы мы могли проверить ваши данные</div></div></div>
+            <div class="onboard-step locked-step" id="step3Row"><div class="onboard-dot locked" id="step3Dot">3</div><div id="step3Text"><strong style="color:var(--gray)">Подтверждение от менеджера</strong><div class="small" style="margin-top:3px">Ожидаем после того, как вы отправите анкету</div></div></div>
+          </div>
+          <div class="progress" style="height:12px;margin-bottom:8px"><div id="onboardingBar" style="width:40%;background:linear-gradient(90deg,#2970FF,#4F90FF);transition:width .6s ease"></div></div>
+          <div id="onboardingMsg" class="small" style="color:var(--gray)">Сделано 1 из 3 шагов. <a href="#" onclick="openVerifyModal();return false;" style="color:var(--blue);font-weight:700">Заполнить анкету →</a></div>
+        </div>
+
+        <div class="info-grid">
+          <div>
+            <div class="card" id="verifyCard">
+              <div class="section-head">
+                <div>
+                  <div class="section-title">Статус подключения к программе</div>
+                  <div class="section-sub">До подключения доступен только ограниченный набор разделов</div>
+                </div>
+              </div>
+              <div id="dashPending" class="notice">Сейчас ваша заявка находится на проверке. Пока заявка не одобрена, доступны только: О программе и связь с менеджером. После подключения автоматически откроются разделы Промокоды и ссылки и Выплаты.</div>
+              <div id="dashApproved" class="notice" style="display:none;background:#ECFDF3;border-color:#A7F3D0;color:#027A48">✅ Добро пожаловать в партнёрскую программу WinWinBot. Все разделы кабинета активированы. Менеджер свяжется с вами для знакомства и дальнейшего плана действий.</div>
+              <div style="margin-top:16px" id="dashProgressWrap">
+                <div class="progress-top"><strong>Прогресс подключения</strong><span id="progressText">1 из 3 шагов</span></div>
+                <div class="progress"><div id="progressBar" style="width:33%"></div></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:14px">
+              <div class="section-head"><div><div class="section-title">Что будет доступно после подключения</div><div class="section-sub">Ключевые возможности партнёрского кабинета</div></div></div>
+              <div class="grid-2">
+                <div class="locked"><div style="font-size:22px">👥</div><div><strong>Клиенты и суб-партнёры</strong><div>Вы увидите приглашённых вами клиентов и партнёров, которых подключили по вашей рекомендации. Это поможет строить свою партнёрскую сеть и зарабатывать не только на прямых подключениях.</div></div></div>
+                <div class="locked"><div style="font-size:22px">💰</div><div><strong>Финансы и выплаты</strong><div>Прозрачная история начислений, доступный баланс, выплаты и детализация дохода по каждому клиенту.</div></div></div>
+                <div class="locked"><div style="font-size:22px">🔗</div><div><strong>Именные промокоды</strong><div>Создавайте отдельные промокоды под статьи, вебинары, каналы и рекламные размещения. Клиент получает скидку, а вы — закрепление клиента за собой.</div></div></div>
+                <div class="locked"><div style="font-size:22px">💳</div><div><strong>Управление подписками</strong><div>Можно оплачивать подписки WinWinBot за своих клиентов прямо из кабинета партнёра.</div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card manager-card">
+              <div class="section-head"><div><div class="section-title">Ваш менеджер</div><div class="section-sub">Поддержка и запуск партнёра</div></div></div>
+              <div style="font-size:15px;font-weight:700;margin-bottom:5px">Юрий — менеджер партнёрской программы</div>
+              <div style="font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:14px">Поможет пройти верификацию, ответит на вопросы и подскажет, как начать привлекать клиентов.</div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center">💬 Написать менеджеру</button>
+            </div>
+
+            <div class="card" style="margin-top:14px">
+              <div class="section-head"><div><div class="section-title">Первые шаги</div></div></div>
+              <div style="display:flex;flex-direction:column;gap:12px;font-size:13px;color:#344054">
+                <div>1. Заполните анкету и реквизиты</div>
+                <div>2. Дождитесь проверки в течение 1 рабочего дня</div>
+                <div>3. После одобрения активируйте ссылки и промокоды</div>
+                <div>4. Изучите базу знаний и материалы</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+        
+</section>
+
+      
+
+      
+      <section class="page" id="page-network">
+        <div class="card access-check" data-lock="true">
+          <div class="locked"><div style="font-size:22px">🔒</div><div><strong>Раздел «Промокоды и ссылки» откроется после подключения</strong><div>Здесь будет список ваших клиентов и партнёров, их статусы, регистрации и начисления. До подключения доступ закрыт.</div></div></div>
+        </div>
+        <div class="verified-only" style="display:none">
+          <div class="card" style="margin-bottom:14px">
+            <div class="section-head"><div><div class="section-title">Мои клиенты</div><div class="section-sub">Клиенты, зарегистрировавшиеся по вашей ссылке или промокоду</div></div></div>
+            <div class="table-wrap">
+              <table class="table"><thead><tr><th>Клиент</th><th>Дата регистрации</th><th>Статус</th><th>Оплата</th><th>Начислено</th></tr></thead><tbody>
+                <tr><td>Алексей К.</td><td>12.05.2026</td><td><span class="badge paid">Оплатил</span></td><td>5 000 ₽</td><td style="font-weight:700;color:#027A48">+1 250 ₽</td></tr>
+                <tr><td>Марина С.</td><td>08.05.2026</td><td><span class="badge active">Активен</span></td><td>5 000 ₽</td><td style="font-weight:700;color:#027A48">+1 250 ₽</td></tr>
+                <tr><td>Дмитрий В.</td><td>01.05.2026</td><td><span class="badge reg">Зарегистрирован</span></td><td>—</td><td>—</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head"><div><div class="section-title">Мои партнёры</div><div class="section-sub">Партнёры и рефералы первого уровня</div></div></div>
+            <div class="table-wrap">
+              <table class="table"><thead><tr><th>Партнёр</th><th>Дата регистрации</th><th>Статус</th><th>Клиентов</th><th>Оборот</th></tr></thead><tbody>
+                <tr><td>Алексей К.</td><td>12.05.2026</td><td><span class="badge active">Активный</span></td><td>3</td><td>15 000 ₽</td></tr>
+                <tr><td>Марина С.</td><td>08.05.2026</td><td><span class="badge paid">Верифицирован</span></td><td>1</td><td>5 000 ₽</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="page" id="page-links">
+        <div class="card access-check" data-lock="true">
+          <div class="locked"><div style="font-size:22px">🔒</div><div><strong>Раздел «Мои партнерские ссылки» откроется после подключения</strong><div>Здесь будут ваши персональные промокоды и реферальные ссылки для привлечения клиентов. До подключения доступ закрыт.</div></div></div>
+        </div>
+        <div class="verified-only" style="display:none">
+          <div class="card">
+            <div class="section-head"><div><div class="section-title">Мои партнерские ссылки</div><div class="section-sub">Ваш основной промокод и ссылки для регистрации клиентов</div></div></div>
+            <div style="font-size:13px;font-weight:700;color:#344054;margin:18px 0 10px">Ваш основной промокод</div>
+            <div class="card" style="background:var(--blue-light);border-style:dashed;border-width:1.5px;border-color:var(--blue);padding:18px;margin-bottom:18px">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                <div><div style="font-size:11px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Промокод</div><div id="mainPromo" style="font-size:30px;font-weight:800;color:var(--blue);letter-spacing:4px">K5TFX</div><div style="font-size:12px;color:var(--gray);margin-top:4px">Скидка 10% · Использований: 0</div></div>
+                <button class="btn btn-primary" onclick="copyText('K5TFX', this)">📋 Скопировать</button>
+              </div>
+            </div>
+            <div style="font-size:13px;font-weight:700;color:#344054;margin:22px 0 10px">Мои реферальные ссылки</div>
+            <div class="link-list">
+              <div class="link-row"><span class="link-flag">🇷🇺</span><span class="link-url" id="l1">https://my.winwinbot.com/ru/p/K5TFX</span><button class="icon-btn" onclick="copyEl('l1',this)">⧉</button></div>
+              <div class="link-row"><span class="link-flag">🇬🇧</span><span class="link-url" id="l2">https://my.winwinbot.com/en/p/K5TFX</span><button class="icon-btn" onclick="copyEl('l2',this)">⧉</button></div>
+              <div class="link-row"><span class="link-flag">🇪🇸</span><span class="link-url" id="l3">https://my.winwinbot.com/es/p/K5TFX</span><button class="icon-btn" onclick="copyEl('l3',this)">⧉</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      
+
+      <section class="page" id="page-payouts">
+        <div class="access-check" data-lock="true">
+          <div class="locked"><div style="font-size:22px">🔒</div><div><strong>Раздел «Выплаты» откроется после подключения</strong><div>Функция выплат доступна только верифицированным партнёрам.</div></div></div>
+        </div>
+        <div class="verified-only" style="display:none">
+          <div class="card" style="margin-bottom:14px;background:var(--green-light);border-color:#6CE9A6">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px">
+              <div>
+                <div style="font-size:13px;color:#065F46;margin-bottom:4px">Доступно к выплате</div>
+                <div style="font-size:28px;font-weight:800;color:#065F46">3 750 <span style="font-size:18px">₽</span></div>
+              </div>
+              <button class="btn btn-primary" style="background:var(--green);font-size:14px">💸 Запросить выплату</button>
+            </div>
+            <div class="small" style="margin-top:12px;color:#065F46">Минимальная сумма для выплаты — 1 000 ₽. Выплата осуществляется на реквизиты, указанные при верификации. Срок обработки — 1–3 рабочих дня.</div>
+          </div>
+
+          <div class="card">
+            <div class="section-head"><div><div class="section-title">История выплат</div><div class="section-sub">Журнал всех ваших заявок на вывод средств</div></div></div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th>Дата запроса</th><th>Сумма</th><th>Статус</th><th>Комментарий</th></tr></thead>
+                <tbody>
+                  <tr><td colspan="4" style="text-align:center;padding:24px;color:var(--gray)">Выплат пока не было</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      
+
+      <section class="page" id="page-materials">
+        <div class="card">
+          <div class="section-head"><div><div class="section-title">Промо-материалы</div><div class="section-sub">Готовые тексты, баннеры и описания для продвижения</div></div></div>
+          <div class="mat-list">
+            <div class="mat-item"><h4>Базовый набор материалов</h4><p>Короткие тексты для Telegram, email и сайтов, ссылки на баннеры и UTM-шаблоны.</p></div>
+            <div class="mat-item"><h4>Промо-материалы для эфиров</h4><p>Анонсы, шаблон описания эфира, тезисы и блок с CTA на регистрацию по реферальной ссылке.</p></div>
+            <div class="mat-item"><h4>Презентация WinWinBot</h4><p>Актуальная презентация для отправки клиентам и потенциальным партнёрам.</p></div>
+          </div>
+        </div>
+      </section>
+
+      
+
+      <section class="page" id="page-manager">
+        <div class="card manager-card">
+          <div class="section-head"><div><div class="section-title">Связаться с менеджером</div><div class="section-sub">Оперативная помощь по запуску и развитию в партнёрской программе</div></div></div>
+          <div style="display:grid;grid-template-columns:1.2fr .8fr;gap:14px">
+            <div>
+              <div style="font-size:18px;font-weight:800;margin-bottom:6px">Юрий — менеджер партнёрской программы</div>
+              <div style="font-size:14px;color:var(--gray);line-height:1.7;margin-bottom:16px">Поможет пройти верификацию, подскажет, как привлекать клиентов, разберёт кейсы и поможет выбрать следующий шаг после подключения.</div>
+              <div class="grid-2">
+                <button class="btn btn-primary">💬 Telegram</button>
+                <button class="btn btn-ghost">📞 Запросить звонок</button>
+              </div>
+            </div>
+            <div class="card" style="padding:16px">
+              <div class="section-title" style="font-size:16px">Когда писать</div>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;font-size:13px;color:#344054">
+                <div>• Не проходит верификация</div>
+                <div>• Нужна помощь с промокодами</div>
+                <div>• Хотите совместный эфир</div>
+                <div>• Нужны промо-материалы и кейсы</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>© 2026 WinWinBot. Выплаты доступны верифицированным партнёрам: ООО, ИП, самозанятые.</footer>
+  </main>
+</div>
+
+<script>
+var isVerified = false;
+var adjectives = ['WIN','BOT','PRO','TOP','VIP','MAX','ACE','FLY','HIT','ROI'];
+
+function goPage(page){
+  document.querySelectorAll('.side-link').forEach(function(el){el.classList.remove('active')});
+  document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active')});
+  var nav = document.querySelector('.side-link[data-page="'+page+'"]');
+  var screen = document.getElementById('page-'+page);
+  if(nav) nav.classList.add('active');
+  if(screen) screen.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.querySelectorAll('.side-link').forEach(function(el){
+  el.addEventListener('click', function(){ goPage(el.dataset.page); });
+});
+
+function scrollToForm(){
+  goPage('about');
+  setTimeout(function(){
+    var f = document.getElementById('verificationFormCard');
+    if (f) f.scrollIntoView({behavior:'smooth', block:'start'});
+  },180);
+}
+
+function updateOrgType(){
+  var t = document.getElementById('orgType').value;
+  var docsGroup = document.getElementById('docsGroup');
+  var rsHint = document.getElementById('rsHint');
+  docsGroup.style.display = (t === 'smz' || t === 'ip_npd') ? 'block' : 'none';
+  if (t === 'ooo') rsHint.textContent = 'Для ООО счёт должен начинаться с 40702';
+  else if (t === 'ip' || t === 'ip_npd') rsHint.textContent = 'Для ИП счёт должен начинаться с 40802';
+  else if (t === 'smz') rsHint.textContent = 'Для самозанятого счёт должен начинаться с 40817';
+  else rsHint.textContent = '';
+}
+
+function validateRS(input){
+  var val = input.value;
+  var orgType = document.getElementById('orgType').value;
+  var err = document.getElementById('rsError');
+  if (val.length < 5){ err.style.display='none'; input.style.borderColor=''; return; }
+  var p = val.substring(0,5), valid = true, msg='';
+  if(orgType==='ooo' && p!=='40702'){valid=false;msg='Для ООО Р/С должен начинаться с 40702';}
+  if((orgType==='ip' || orgType==='ip_npd') && p!=='40802'){valid=false;msg='Для ИП Р/С должен начинаться с 40802';}
+  if(orgType==='smz' && p!=='40817'){valid=false;msg='Для СМЗ Р/С должен начинаться с 40817';}
+  err.textContent = msg; err.style.display = valid?'none':'block'; input.style.borderColor = valid?'':'var(--red)';
+}
+
+function showFileName(input, id){
+  if(input.files && input.files[0]) document.getElementById(id).textContent = '✅ ' + input.files[0].name;
+}
+
+function submitForm(e){
+  e.preventDefault();
+  document.getElementById('statusPending').style.display='flex';
+  var btn = e.target.querySelector('button[type="submit"]');
+  btn.disabled = true; btn.textContent='✓ Заявка отправлена';
+  document.getElementById('headerStatusText').textContent = 'Заявка на рассмотрении';
+  setTimeout(function(){ approvePartner(); }, 1500);
+}
+
+function approvePartner(){
+  isVerified = true;
+  document.getElementById('statusPending').style.display='none';
+  document.getElementById('statusApproved').style.display='flex';
+  document.getElementById('headerStatusText').innerHTML = '✅ Подключен';
+  document.getElementById('headerStatusText').style.background = '#ECFDF3';
+  document.getElementById('headerStatusText').style.borderColor = '#A7F3D0';
+  document.getElementById('headerStatusText').style.color = '#027A48';
+  document.getElementById('headerLevelBadge').textContent = 'Старт';
+  document.getElementById('dashPending').style.display='none';
+  document.getElementById('dashApproved').style.display='block';
+  document.getElementById('progressBar').style.width='100%';
+  document.getElementById('progressText').textContent='3 из 3 шагов';
+  document.querySelectorAll('.access-check').forEach(function(el){ el.style.display='none'; });
+  document.querySelectorAll('.verified-only').forEach(function(el){ el.style.display='block'; });
+}
+
+function autoCode(){
+  var word = adjectives[Math.floor(Math.random()*adjectives.length)];
+  var num = Math.floor(Math.random()*90 + 10);
+  document.getElementById('newPromoInput').value = word + num;
+}
+
+function createPromo(){
+  if(!isVerified){ scrollToForm(); return; }
+  var input = document.getElementById('newPromoInput');
+  var code = input.value.trim();
+  var err = document.getElementById('promoCreateError');
+  if(!code || code.length < 3){ err.textContent='Введите промокод — минимум 3 символа'; err.style.display='block'; return; }
+  err.style.display='none';
+  var emptyPromos = document.getElementById('emptyPromos'); if(emptyPromos) emptyPromos.style.display='none';
+  var wrap = document.createElement('div');
+  wrap.className = 'news-item';
+  wrap.innerHTML = '<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:16px;font-weight:800;color:var(--blue);letter-spacing:2px">'+code+'</div><div style="font-size:12px;color:var(--gray);margin-top:4px">Скидка 10% · Использований: 0</div></div><div style="display:flex;gap:8px"><button class="btn btn-ghost" onclick="copyText(''+code+'',this)">📋 Код</button><button class="btn btn-ghost" onclick="togglePromoLinks(this)">🔗 Ссылки ▼</button></div></div><div class="promo-links" style="display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)"><div class="link-list"><div class="link-row"><span class="link-flag">🇷🇺</span><span class="link-url">https://my.winwinbot.com/ru/p/'+code+'</span><button class="icon-btn" onclick="copyText('https://my.winwinbot.com/ru/p/'+code+'',this)">⧉</button></div><div class="link-row"><span class="link-flag">🇬🇧</span><span class="link-url">https://my.winwinbot.com/en/p/'+code+'</span><button class="icon-btn" onclick="copyText('https://my.winwinbot.com/en/p/'+code+'',this)">⧉</button></div><div class="link-row"><span class="link-flag">🇪🇸</span><span class="link-url">https://my.winwinbot.com/es/p/'+code+'</span><button class="icon-btn" onclick="copyText('https://my.winwinbot.com/es/p/'+code+'',this)">⧉</button></div></div></div>';
+  document.getElementById('promosList').insertBefore(wrap, document.getElementById('promosList').firstChild);
+  document.getElementById('promosCount').textContent = document.querySelectorAll('#promosList .news-item').length;
+
+  var emptyLinks = document.getElementById('emptyAdditionalLinks'); if(emptyLinks) emptyLinks.style.display='none';
+  var acc = document.createElement('div');
+  acc.className = 'news-item';
+  acc.innerHTML = '<div onclick="toggleAcc(this)" style="display:flex;justify-content:space-between;gap:10px;align-items:center;cursor:pointer"><div><div style="font-size:15px;font-weight:800;color:var(--blue);letter-spacing:2px">'+code+'</div><div style="font-size:12px;color:var(--gray)">Нажмите, чтобы открыть ссылки для этого промокода</div></div><div style="font-size:14px;color:var(--gray)" class="acc-arrow">▼</div></div><div class="acc-body" style="display:none;margin-top:12px"><div class="link-list"><div class="link-row"><span class="link-flag">🇷🇺</span><span class="link-url">https://my.winwinbot.com/ru/p/'+code+'</span><button class="icon-btn" onclick="event.stopPropagation();copyText('https://my.winwinbot.com/ru/p/'+code+'',this)">⧉</button></div><div class="link-row"><span class="link-flag">🇬🇧</span><span class="link-url">https://my.winwinbot.com/en/p/'+code+'</span><button class="icon-btn" onclick="event.stopPropagation();copyText('https://my.winwinbot.com/en/p/'+code+'',this)">⧉</button></div><div class="link-row"><span class="link-flag">🇪🇸</span><span class="link-url">https://my.winwinbot.com/es/p/'+code+'</span><button class="icon-btn" onclick="event.stopPropagation();copyText('https://my.winwinbot.com/es/p/'+code+'',this)">⧉</button></div></div></div>';
+  document.getElementById('additionalLinksList').insertBefore(acc, document.getElementById('additionalLinksList').firstChild);
+  document.getElementById('additionalLinksCount').textContent = document.querySelectorAll('#additionalLinksList .news-item').length;
+  input.value='';
+}
+
+function togglePromoLinks(btn){
+  var body = btn.closest('.news-item').querySelector('.promo-links');
+  if(body.style.display==='none'){ body.style.display='block'; btn.textContent='🔗 Ссылки ▲'; }
+  else{ body.style.display='none'; btn.textContent='🔗 Ссылки ▼'; }
+}
+
+function toggleAcc(el){
+  var item = el.closest('.news-item');
+  var body = item.querySelector('.acc-body');
+  var arrow = item.querySelector('.acc-arrow');
+  if(body.style.display==='none'){ body.style.display='block'; arrow.textContent='▲'; }
+  else{ body.style.display='none'; arrow.textContent='▼'; }
+}
+
+function copyText(text, btn){
+  navigator.clipboard.writeText(text).catch(function(){});
+  var old = btn.innerHTML || btn.textContent;
+  if(btn.tagName==='BUTTON') btn.innerHTML='✓ Скопировано'; else btn.textContent='✓';
+  btn.style.background='#12B76A'; btn.style.color='#fff'; btn.style.borderColor='#12B76A';
+  setTimeout(function(){ if(btn.tagName==='BUTTON') btn.innerHTML=old; else btn.textContent=old; btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }, 1500);
+}
+
+function copyEl(id, btn){ copyText(document.getElementById(id).textContent, btn); }
+
+// ─── DADATA TOKEN (replace with real) ───────
+var DADATA_TOKEN = 'ВСТАВЬТЕ_ВАШ_ТОКЕН_DADATA';
+
+function dadataLookup(val){
+  var hint = document.getElementById('dadataHint');
+  if(!hint) return;
+  if(val.length < 8){ hint.style.display='none'; return; }
+  // DEMO MODE (mock data for preview; replace fetch below with real API call)
+  var mockResults = {
+    '7707083893': {name:'ПАО «Сбербанк»', ogrn:'1027700132195', address:'117312, г. Москва, ул. Вавилова, д. 19', type:'ooo'},
+    '773601001': {name:'ФНС России', ogrn:'1047707030513', address:'127381, г. Москва, ул. Неглинная, д. 23', type:'ooo'},
+  };
+  var result = mockResults[val];
+  if(result){
+    hint.innerHTML = '<div class="dadata-item" onclick="applyDadata('+JSON.stringify(result)+')">' +
+      '<div class="dadata-name">'+result.name+'</div>' +
+      '<div class="dadata-meta">ОГРН: '+result.ogrn+' · '+result.address+'</div>' +
+    '</div>';
+    hint.style.display = 'block';
+  } else {
+    hint.innerHTML = '<div class="dadata-item" style="color:var(--gray)">Введите ИНН полностью — данные подтянутся из ЕГРЮЛ</div>';
+    hint.style.display = 'block';
+  }
+  /*
+  // REAL API (раскомментируйте при наличии токена):
+  fetch('https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Token '+DADATA_TOKEN},
+    body: JSON.stringify({query: val})
+  }).then(r=>r.json()).then(d=>{
+    if(d.suggestions && d.suggestions.length){
+      var s = d.suggestions[0];
+      applyDadata({
+        name: s.value,
+        ogrn: s.data.ogrn,
+        address: s.data.address.value,
+        type: s.data.type === 'INDIVIDUAL' ? 'ip' : 'ooo'
+      });
+    }
+  });
+  */
+}
+
+function applyDadata(d){
+  if(d.name) document.getElementById('orgName').value = d.name;
+  if(d.ogrn) document.getElementById('ogrn').value = d.ogrn;
+  if(d.address) document.getElementById('legalAddress').value = d.address;
+  if(d.type){ var s = document.getElementById('orgType'); if(s) s.value = d.type; updateOrgType(); }
+  document.getElementById('dadataHint').style.display = 'none';
+  var st = document.getElementById('dadataStatus'); if(st) st.style.display = 'inline';
+}
+
+// ─── MODAL ───────────────────────────────────
+function openVerifyModal(){
+  document.getElementById('verifyModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeVerifyModal(){
+  document.getElementById('verifyModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOutside(e){
+  if(e.target.id === 'verifyModal') closeVerifyModal();
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVerifyModal(); });
+
+// ─── ONBOARDING PROGRESS ─────────────────────
+function setOnboardingStep(step){
+  // step: 1=registered(40%), 2=submitted(90%), 3=approved(100%)
+  var bar = document.getElementById('onboardingBar');
+  var pct = document.getElementById('onboardingPctBadge');
+  var msg = document.getElementById('onboardingMsg');
+  var s2dot = document.getElementById('step2Dot');
+  var s2text = document.getElementById('step2Text');
+  var s3row = document.getElementById('step3Row');
+  var s3dot = document.getElementById('step3Dot');
+  var s3text = document.getElementById('step3Text');
+  if(!bar) return;
+  if(step === 2){
+    bar.style.width = '90%';
+    pct.textContent = '90%';
+    pct.style.color = 'var(--orange)';
+    s2dot.className = 'onboard-dot done'; s2dot.textContent = '✓';
+    s2text.innerHTML = '<strong>Анкета верификации отправлена</strong><div class="small" style="margin-top:3px">Ожидайте подтверждения от менеджера Юрия — обычно до 1 рабочего дня</div>';
+    document.getElementById('step2Row').className = 'onboard-step done';
+    s3row.className = 'onboard-step'; s3dot.className = 'onboard-dot waiting'; s3dot.textContent = '🕐';
+    s3text.innerHTML = '<strong>Ожидаем подтверждения менеджера</strong><div class="small" style="margin-top:3px">Юрий проверит данные и свяжется с вами</div>';
+    msg.innerHTML = 'Сделано 2 из 3 шагов. Ожидайте подтверждения от менеджера.';
+  } else if(step === 3){
+    bar.style.width = '100%';
+    pct.textContent = '100%';
+    pct.style.color = 'var(--green)';
+    s2dot.className = 'onboard-dot done'; s2dot.textContent = '✓';
+    s3row.className = 'onboard-step done'; s3dot.className = 'onboard-dot complete'; s3dot.textContent = '✓';
+    s3text.innerHTML = '<strong>Вы стали партнёром WinWinBot!</strong><div class="small" style="margin-top:3px">Все разделы кабинета открыты — начинайте работу</div>';
+    document.getElementById('onboardingCard').style.background = '#ECFDF3';
+    document.getElementById('onboardingCard').style.borderColor = '#6CE9A6';
+    msg.innerHTML = '🎉 Добро пожаловать в партнёрскую программу WinWinBot!';
+  }
+}
+
+// ─── FORM SUBMIT OVERRIDE ────────────────────
+// Wrap existing submitForm or define it
+var _origSubmit = window.submitForm;
+window.submitForm = function(e){
+  e.preventDefault();
+  var pending = document.getElementById('statusPending');
+  var approved = document.getElementById('statusApproved');
+  if(pending){ pending.style.display = 'block'; }
+  if(approved){ approved.style.display = 'none'; }
+  setOnboardingStep(2);
+  closeVerifyModal();
+};
+
+</script>
+
+<!-- MODAL: АНКЕТА ВЕРИФИКАЦИИ -->
+<div class="modal-overlay" id="verifyModal" onclick="closeModalOutside(event)">
+  <div class="modal-box" id="verifyModalBox">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="modal-icon">📝</div>
+        <div>
+          <div style="font-size:18px;font-weight:800">Анкета верификации</div>
+          <div class="small">Заполните данные — менеджер Юрий проверит в течение 1 рабочего дня</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeVerifyModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="partnerForm" onsubmit="submitForm(event)">
+        <div class="form-grid">
+
+          <div class="form-step"><div class="form-step-num">1</div> Контактные данные</div>
+          <div class="field full"><label>Имя</label><input type="text" value="Василий" readonly></div>
+          <div class="field"><label>Email</label><input type="email" value="vasily@example.com" readonly></div>
+          <div class="field"><label>Телефон</label><input type="tel" value="+7 900 123-45-67" readonly></div>
+          <div class="field"><label>Тип деятельности</label><input type="text" value="Интегратор / агентство" readonly></div>
+          <div class="field full"><label>Планируемое кол-во клиентов в месяц</label><input type="text" value="11–50" readonly></div>
+
+          <div class="form-step"><div class="form-step-num">2</div> Юридические данные</div>
+
+          <div class="field full">
+            <label>Тип организации <span class="req">*</span></label>
+            <select id="orgType" onchange="updateOrgType()" required>
+              <option value="">— Выберите —</option>
+              <option value="ooo">ООО</option>
+              <option value="ip">ИП</option>
+              <option value="ip_npd">ИП на НПД</option>
+              <option value="smz">Самозанятый (СМЗ)</option>
+            </select>
+          </div>
+
+          <div class="field full field-rel">
+            <label>ИНН <span class="req">*</span>
+              <span id="dadataStatus" style="font-size:11px;font-weight:600;margin-left:8px;color:var(--green);display:none">✓ Данные подтверждены</span>
+            </label>
+            <input type="text" id="inn" maxlength="12" placeholder="Введите ИНН — данные подтянутся автоматически"
+              oninput="this.value=this.value.replace(/\D/g,'');dadataLookup(this.value)"
+              required autocomplete="off">
+            <div class="small" style="margin-top:4px;color:var(--gray)">При вводе ИНН автоматически подтягиваем наименование, ОГРН и адрес из ЕГРЮЛ/ЕГРИП</div>
+            <div class="dadata-hint" id="dadataHint"></div>
+          </div>
+
+          <div class="field full">
+            <label>Наименование юр. лица <span class="req">*</span></label>
+            <input type="text" id="orgName" placeholder="Заполнится автоматически или введите вручную" required>
+          </div>
+          <div class="field">
+            <label>ОГРН / ОГРНИП</label>
+            <input type="text" id="ogrn" maxlength="15" placeholder="Заполнится автоматически" oninput="this.value=this.value.replace(/\D/g,'')">
+          </div>
+          <div class="field full" id="legalAddressGroup">
+            <label>Юридический адрес</label>
+            <input type="text" id="legalAddress" placeholder="Заполнится автоматически из ИНН">
+          </div>
+
+          <div class="form-step"><div class="form-step-num">3</div> Банковские реквизиты и контакты</div>
+
+          <div class="field">
+            <label>БИК <span class="req">*</span></label>
+            <input type="text" id="bik" maxlength="9" placeholder="9 цифр" oninput="this.value=this.value.replace(/\D/g,'')" required>
+          </div>
+          <div class="field">
+            <label>Наименование банка <span class="req">*</span></label>
+            <input type="text" id="bankName" placeholder="Например: Сбербанк" required>
+          </div>
+          <div class="field">
+            <label>Р/С <span class="req">*</span></label>
+            <input type="text" id="rs" maxlength="20" placeholder="20 цифр" oninput="this.value=this.value.replace(/\D/g,'');validateRS(this)" required>
+            <div id="rsHint" class="small"></div>
+            <div id="rsError" class="small" style="display:none;color:var(--red)"></div>
+          </div>
+          <div class="field">
+            <label>Кор. счёт <span class="req">*</span></label>
+            <input type="text" id="ks" maxlength="20" placeholder="20 цифр" oninput="this.value=this.value.replace(/\D/g,'')" required>
+          </div>
+          <div class="field full">
+            <label>Юзернейм в мессенджере (WA / TG / Max) <span class="req">*</span></label>
+            <input type="text" id="messenger" placeholder="@username или ссылка" required>
+          </div>
+          <div class="field full">
+            <label>Сайт / ресурс для привлечения клиентов <span class="req">*</span></label>
+            <input type="text" id="website" placeholder="https://site.ru или ссылка на канал" required>
+          </div>
+
+          <div class="field full" id="docsGroup" style="display:none">
+            <div class="form-step" style="border:none;padding:0;margin-bottom:8px;border-bottom:none"><div class="form-step-num">📎</div> Документы (для СМЗ / ИП на НПД) <span class="req">*</span></div>
+            <div class="grid-3">
+              <div class="upload" onclick="document.getElementById('passportFile').click()">
+                <input id="passportFile" type="file" accept="image/*,.pdf" style="display:none" onchange="showFileName(this,'passportLbl')">
+                <span id="passportLbl">📎 Паспорт (разворот с фото)</span>
+              </div>
+              <div class="upload" onclick="document.getElementById('regFile').click()">
+                <input id="regFile" type="file" accept="image/*,.pdf" style="display:none" onchange="showFileName(this,'regLbl')">
+                <span id="regLbl">📎 Регистрация паспорта</span>
+              </div>
+              <div class="upload" onclick="document.getElementById('taxFile').click()">
+                <input id="taxFile" type="file" accept="image/*,.pdf" style="display:none" onchange="showFileName(this,'taxLbl')">
+                <span id="taxLbl">📎 Справка из «Мой налог»</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checks" style="background:#F8FAFC;border:1px solid #E2E8F0;padding:20px;margin-top:24px;border-radius:12px">
+          <label class="check"><input type="checkbox" required><span>Даю согласие на обработку персональных данных по 152-ФЗ</span></label>
+          <label class="check"><input type="checkbox" required><span>Принимаю политику конфиденциальности</span></label>
+          <label class="check"><input type="checkbox" required><span>Принимаю оферту партнёрской программы</span></label>
+          <label class="check"><input type="checkbox"><span>Согласен получать рекламные материалы</span></label>
+        </div>
+
+        <button type="submit" class="submit-btn-large" style="margin-top:24px">
+          <span>📨</span> Отправить заявку на верификацию
+        </button>
+        <div id="statusPending" class="status pending">🕐 Заявка на рассмотрении — ответим в течение 1 рабочего дня</div>
+        <div id="statusApproved" class="status ok">✅ Добро пожаловать в партнёрскую программу WinWinBot</div>
+      </form>
+
+      <div style="margin-top:18px;padding:14px 16px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;font-size:12px;color:#1D4ED8;line-height:1.6">
+        <strong>🔍 Автопроверка ИНН:</strong> При вводе ИНН кабинет обращается к сервису Dadata.ru (ЕГРЮЛ/ЕГРИП) и автоматически подтягивает наименование, ОГРН и адрес. Это ускоряет заполнение и снижает ошибки. <strong>Для подключения реального API:</strong> зарегистрируйтесь на dadata.ru → скопируйте API-токен → вставьте в переменную <code>DADATA_TOKEN</code> в JS-блоке кабинета.
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
