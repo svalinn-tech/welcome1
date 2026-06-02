@@ -196,11 +196,6 @@ input[type="checkbox"] {
 
 /* MODAL */
 
-.clock-widget{background:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);border-radius:20px;padding:28px 20px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 12px 32px rgba(15,23,42,.15);margin-bottom:24px;position:relative;overflow:hidden;}
-.clock-widget::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at center,rgba(41,112,255,.15) 0%,transparent 55%);animation:rotateBg 20s linear infinite;}
-@keyframes rotateBg{100%{transform:rotate(360deg)}}
-.clock-time{font-size:52px;font-weight:800;letter-spacing:3px;font-variant-numeric:tabular-nums;background:linear-gradient(to right,#fff,#94A3B8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;position:relative;z-index:1;}
-.clock-date{font-size:14px;color:#94A3B8;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;position:relative;z-index:1;}
 </style>
 </head>
 <body>
@@ -251,11 +246,7 @@ input[type="checkbox"] {
           </div>
         </div>
 
-        
-        <div class="clock-widget">
-          <div class="clock-time" id="clockTime">00:00:00</div>
-          <div class="clock-date" id="clockDate"></div>
-        </div>
+
 
         <div class="kpi-row grid-4">
           <div class="metric blue"><div class="metric-label">Всего заработано</div><div class="metric-value" id="mTotal">0,00 ₽</div></div>
@@ -263,6 +254,7 @@ input[type="checkbox"] {
           <div class="metric purple"><div class="metric-label">Всего клиентов</div><div class="metric-value" id="mRefs">0</div></div>
           <div class="metric orange"><div class="metric-label">Всего партнёров</div><div class="metric-value" id="mPartners">0</div></div>
         </div>
+
 
         <div class="card" style="margin-bottom:18px" id="onboardingCard">
           <div class="section-head" style="margin-bottom:16px">
@@ -278,25 +270,13 @@ input[type="checkbox"] {
             <div class="onboard-step locked-step" id="step3Row"><div class="onboard-dot locked" id="step3Dot">3</div><div id="step3Text"><strong style="color:var(--gray)">Подтверждение от менеджера</strong><div class="small" style="margin-top:3px">Ожидаем после того, как вы отправите анкету</div></div></div>
           </div>
           <div class="progress" style="height:12px;margin-bottom:8px"><div id="onboardingBar" style="width:40%;background:linear-gradient(90deg,#2970FF,#4F90FF);transition:width .6s ease"></div></div>
-          <div id="onboardingMsg" class="small" style="color:var(--gray)">Сделано 1 из 3 шагов. <a href="#" onclick="openVerifyModal();return false;" style="color:var(--blue);font-weight:700">Заполнить анкету →</a></div>
+          <div id="onboardingMsg" class="small" style="color:var(--gray)">Сделано 1 из 3 шагов. <a href="#" onclick="scrollToForm();return false;" style="color:var(--blue);font-weight:700">Заполнить анкету →</a></div>
         </div>
+
 
         <div class="info-grid">
           <div>
-            <div class="card" id="verifyCard">
-              <div class="section-head">
-                <div>
-                  <div class="section-title">Статус подключения к программе</div>
-                  <div class="section-sub">До подключения доступен только ограниченный набор разделов</div>
-                </div>
-              </div>
-              <div id="dashPending" class="notice">Сейчас ваша заявка находится на проверке. Пока заявка не одобрена, доступны только: Главная и связь с менеджером. После подключения автоматически откроются разделы Промокоды и ссылки и Выплаты.</div>
-              <div id="dashApproved" class="notice" style="display:none;background:#ECFDF3;border-color:#A7F3D0;color:#027A48">✅ Добро пожаловать в партнёрскую программу WinWinBot. Все разделы кабинета активированы. Менеджер свяжется с вами для знакомства и дальнейшего плана действий.</div>
-              <div style="margin-top:16px" id="dashProgressWrap">
-                <div class="progress-top"><strong>Прогресс подключения</strong><span id="progressText">1 из 3 шагов</span></div>
-                <div class="progress"><div id="progressBar" style="width:33%"></div></div>
-              </div>
-            </div>
+
 
             <div class="card" style="margin-top:14px">
               <div class="section-head"><div><div class="section-title">Что будет доступно после подключения</div><div class="section-sub">Ключевые возможности партнёрского кабинета</div></div></div>
@@ -590,10 +570,18 @@ document.querySelectorAll('.side-link').forEach(function(el){
 
 function scrollToForm(){
   goPage('about');
-  setTimeout(function(){
-    var f = document.getElementById('verificationFormCard');
-    if (f) f.scrollIntoView({behavior:'smooth', block:'start'});
-  },180);
+  // Double rAF: wait for browser to paint layout after display:block, then scroll
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      var f = document.getElementById('verificationFormCard');
+      if(!f) return;
+      var top = f.getBoundingClientRect().top + window.pageYOffset - 20;
+      window.scrollTo({top: top, behavior: 'smooth'});
+      f.style.transition='box-shadow 0.4s ease';
+      f.style.boxShadow='0 0 0 3px #2970FF, 0 16px 40px rgba(41,112,255,0.3)';
+      setTimeout(function(){ f.style.boxShadow=''; }, 2000);
+    });
+  });
 }
 
 function updateOrgType(){
@@ -807,15 +795,61 @@ window.submitForm = function(e){
 (function(){
   var days=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
   var months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+
+  // Draw hour tick marks on SVG
+  var svgNS='http://www.w3.org/2000/svg';
+  var marksG=document.getElementById('hourMarks');
+  if(marksG){
+    for(var i=0;i<12;i++){
+      var ang=i*30*Math.PI/180;
+      var isMain=(i%3===0);
+      var r1=isMain?78:84, r2=96;
+      var x1=100+r1*Math.sin(ang), y1=100-r1*Math.cos(ang);
+      var x2=100+r2*Math.sin(ang), y2=100-r2*Math.cos(ang);
+      var line=document.createElementNS(svgNS,'line');
+      line.setAttribute('x1',x1);line.setAttribute('y1',y1);
+      line.setAttribute('x2',x2);line.setAttribute('y2',y2);
+      line.setAttribute('stroke',isMain?'rgba(255,255,255,0.7)':'rgba(255,255,255,0.25)');
+      line.setAttribute('stroke-width',isMain?'2.5':'1.5');
+      line.setAttribute('stroke-linecap','round');
+      marksG.appendChild(line);
+    }
+  }
+
+  function setRotation(id, deg){
+    var el=document.getElementById(id);
+    if(!el) return;
+    var cx=100,cy=100;
+    var rad=deg*Math.PI/180;
+    var x1=cx, y1=cy;
+    // get original end points
+    var len={'hourHand':55,'minuteHand':72,'secondHand':78};
+    var backLen={'hourHand':15,'minuteHand':15,'secondHand':20};
+    var l=len[id]||60, b=backLen[id]||10;
+    el.setAttribute('x2',cx+l*Math.sin(rad));
+    el.setAttribute('y2',cy-l*Math.cos(rad));
+    el.setAttribute('x1',cx-b*Math.sin(rad));
+    el.setAttribute('y1',cy+b*Math.cos(rad));
+  }
+
   function tick(){
     var n=new Date();
-    var h=String(n.getHours()).padStart(2,'0');
-    var m=String(n.getMinutes()).padStart(2,'0');
-    var s=String(n.getSeconds()).padStart(2,'0');
-    document.getElementById('clockTime').textContent=h+':'+m+':'+s;
-    document.getElementById('clockDate').textContent=days[n.getDay()]+', '+n.getDate()+' '+months[n.getMonth()]+' '+n.getFullYear();
+    var h=n.getHours(), m=n.getMinutes(), s=n.getSeconds();
+    var ms=n.getMilliseconds();
+    // Smooth second hand
+    var secDeg=(s+ms/1000)*6;
+    var minDeg=(m+s/60)*6;
+    var hourDeg=(h%12+m/60)*30;
+    setRotation('hourHand', hourDeg);
+    setRotation('minuteHand', minDeg);
+    setRotation('secondHand', secDeg);
+    // Digital
+
+    document.getElementById('clockDate').innerHTML=
+      '<span style="font-size:15px;font-weight:700;color:#fff">'+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+'</span><br>'+
+      days[n.getDay()]+'<br>'+n.getDate()+' '+months[n.getMonth()]+' '+n.getFullYear();
   }
-  setInterval(tick,1000); tick();
+  setInterval(tick,50); tick();
 })();
 
 </script>
