@@ -17,11 +17,12 @@
   --gray:#667085;--gray-light:#F9FAFB;--gray-2:#98A2B3;
   --border:#E4E7EC;--text:#101828;--bg:#F5F7FF;--radius:14px;--sidebar:#0F172A;
 }
+html { scroll-behavior: smooth; }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--text);background:var(--bg)}
 a{text-decoration:none}
 button{font-family:inherit}
 .app{display:flex;min-height:100vh}
-.sidebar{width:262px;background:linear-gradient(180deg,#0F172A 0%,#111B34 100%);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;padding:18px 14px}
+.sidebar{width:262px;background:linear-gradient(180deg,#0F172A 0%,#111B34 100%);color:#fff;display:flex;flex-direction:column;height:100vh;overflow-y:auto;position:sticky;top:0;height:100vh;padding:18px 14px}
 .logo{display:flex;align-items:center;gap:10px;padding:8px 10px 18px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}
 .logo-mark{width:42px;height:42px;border-radius:11px;background:#1D4ED8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
 .logo-text{font-size:18px;font-weight:800;letter-spacing:.2px}
@@ -196,6 +197,49 @@ input[type="checkbox"] {
 
 /* MODAL */
 
+
+/* ── ONBOARDING CARD ─────────────────────────────────────── */
+#onboardingCard { border-left: 4px solid var(--blue); }
+.onboard-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 18px; }
+.onboard-step {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid #F1F5F9;
+  position: relative;
+}
+.onboard-step:last-child { border-bottom: none; }
+.onboard-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; flex-shrink: 0;
+  margin-top: 1px;
+}
+.onboard-dot.done { background: #ECFDF3; color: #027A48; border: 2px solid #A7F3D0; }
+.onboard-dot.pending { background: #EFF6FF; color: #1D4ED8; border: 2px solid #BFDBFE; }
+.onboard-dot.locked { background: #F8FAFC; color: #94A3B8; border: 2px solid #E2E8F0; }
+.onboard-body { flex: 1; }
+.onboard-title { font-size: 14px; font-weight: 700; color: #0F172A; line-height: 1.4; }
+.onboard-title.muted { color: #94A3B8; }
+.onboard-sub { font-size: 12px; color: #64748B; margin-top: 3px; line-height: 1.5; }
+.onboard-pct {
+  font-size: 24px; font-weight: 800;
+  background: linear-gradient(135deg, #2970FF, #4F90FF);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.onboard-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 14px; flex-wrap: wrap; gap: 8px;
+}
+.onboard-footer-text { font-size: 13px; color: #64748B; }
+.onboard-footer a {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue); color: #fff;
+  font-size: 13px; font-weight: 700;
+  padding: 8px 16px; border-radius: 8px;
+  text-decoration: none; transition: opacity .2s;
+}
+.onboard-footer a:hover { opacity: .85; }
+
 </style>
 </head>
 <body>
@@ -214,6 +258,8 @@ input[type="checkbox"] {
       <div class="side-link" data-page="payouts"><span class="side-ico">📥</span><span>Выплаты</span></div>
       <div class="side-link" data-page="materials"><span class="side-ico">🗂️</span><span>Промо-материалы</span></div>
             <div class="side-link" data-page="manager"><span class="side-ico">💬</span><span>Связаться с менеджером</span></div>
+    
+      <a href="https://t.me/+eH7ROvNjA61iNTEy" target="_blank" rel="noopener" class="side-link" style="text-decoration:none;"><span class="side-ico">👥</span><span>Чат партнеров</span></a>
     </nav>
     <div class="sidebar-footer">ID партнёра: 73257</div>
   </aside>
@@ -242,7 +288,7 @@ input[type="checkbox"] {
           <h2>Остался один шаг для становления партнёром WinWinBot</h2>
           <p>Рады, что вы заинтересовались нашей партнёрской программой. Для полного доступа к партнёрской программе пройдите короткую верификацию и воспользуйтесь всеми преимуществами на максимум. Инструкция ниже.</p>
           <div class="banner-actions">
-            <button class="btn btn-ghost" onclick="scrollToForm()">📝 Пройти верификацию</button>
+            <a href="#verificationFormCard" class="btn btn-ghost" style="text-decoration:none; display:inline-flex;">📝 Пройти верификацию</a>
           </div>
         </div>
 
@@ -256,21 +302,46 @@ input[type="checkbox"] {
         </div>
 
 
-        <div class="card" style="margin-bottom:18px" id="onboardingCard">
+        <div class="card" id="onboardingCard">
           <div class="section-head" style="margin-bottom:16px">
             <div>
               <div class="section-title">До становления партнёром осталось:</div>
               <div class="section-sub">Показываем, что нужно для становления верифицированным партнёром</div>
             </div>
-            <div id="onboardingPctBadge" style="font-size:22px;font-weight:800;color:var(--blue)">40%</div>
+            <div class="onboard-pct" id="onboardingPctBadge">40%</div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
-            <div class="onboard-step done"><div class="onboard-dot done">✓</div><div><strong>Зарегистрировался в партнёрской программе</strong></div></div>
-            <div class="onboard-step" id="step2Row"><div class="onboard-dot pending" id="step2Dot">2</div><div id="step2Text"><strong>Заполнить анкету верификации</strong><div class="small" style="margin-top:3px">Заполните анкету, чтобы мы могли проверить ваши данные</div></div></div>
-            <div class="onboard-step locked-step" id="step3Row"><div class="onboard-dot locked" id="step3Dot">3</div><div id="step3Text"><strong style="color:var(--gray)">Подтверждение от менеджера</strong><div class="small" style="margin-top:3px">Ожидаем после того, как вы отправите анкету</div></div></div>
+
+          <div class="progress" style="height:8px;margin-bottom:20px;border-radius:99px">
+            <div id="onboardingBar" style="width:40%;background:linear-gradient(90deg,#2970FF,#4F90FF);border-radius:99px;transition:width .6s ease"></div>
           </div>
-          <div class="progress" style="height:12px;margin-bottom:8px"><div id="onboardingBar" style="width:40%;background:linear-gradient(90deg,#2970FF,#4F90FF);transition:width .6s ease"></div></div>
-          <div id="onboardingMsg" class="small" style="color:var(--gray)">Сделано 1 из 3 шагов. <a href="#" onclick="scrollToForm();return false;" style="color:var(--blue);font-weight:700">Заполнить анкету →</a></div>
+
+          <div class="onboard-steps">
+            <div class="onboard-step">
+              <div class="onboard-dot done">✓</div>
+              <div class="onboard-body">
+                <div class="onboard-title">Зарегистрировался в партнёрской программе</div>
+              </div>
+            </div>
+            <div class="onboard-step" id="step2Row">
+              <div class="onboard-dot pending" id="step2Dot">2</div>
+              <div class="onboard-body" id="step2Text">
+                <div class="onboard-title">Заполнить анкету верификации</div>
+                <div class="onboard-sub">Заполните анкету, чтобы мы могли проверить ваши данные</div>
+              </div>
+            </div>
+            <div class="onboard-step" id="step3Row">
+              <div class="onboard-dot locked" id="step3Dot">3</div>
+              <div class="onboard-body" id="step3Text">
+                <div class="onboard-title muted">Подтверждение от менеджера</div>
+                <div class="onboard-sub">Ожидаем после того, как вы отправите анкету</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="onboard-footer">
+            <span class="onboard-footer-text" id="onboardingMsg">Сделано 1 из 3 шагов</span>
+            <a href="#verificationFormCard">📝 Заполнить анкету →</a>
+          </div>
         </div>
 
 
@@ -294,7 +365,7 @@ input[type="checkbox"] {
               <div class="section-head"><div><div class="section-title">Ваш менеджер</div><div class="section-sub">Поддержка и запуск партнёра</div></div></div>
               <div style="font-size:15px;font-weight:700;margin-bottom:5px">Юрий — менеджер партнёрской программы</div>
               <div style="font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:14px">Поможет пройти верификацию, ответит на вопросы и подскажет, как начать привлекать клиентов.</div>
-              <button class="btn btn-primary" style="width:100%;justify-content:center">💬 Написать менеджеру</button>
+              <a href="https://t.me/partner_winwinbot" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;justify-content:center;text-decoration:none">💬 Написать менеджеру</a>
             </div>
 
             <div class="card" style="margin-top:14px">
@@ -528,8 +599,8 @@ input[type="checkbox"] {
               <div style="font-size:18px;font-weight:800;margin-bottom:6px">Юрий — менеджер партнёрской программы</div>
               <div style="font-size:14px;color:var(--gray);line-height:1.7;margin-bottom:16px">Поможет пройти верификацию, подскажет, как привлекать клиентов, разберёт кейсы и поможет выбрать следующий шаг после подключения.</div>
               <div class="grid-2">
-                <button class="btn btn-primary">💬 Telegram</button>
-                <button class="btn btn-ghost">📞 Запросить звонок</button>
+                <a href="https://t.me/partner_winwinbot" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none">💬 Telegram</a>
+                <a href="https://t.me/partner_winwinbot" target="_blank" rel="noopener" class="btn btn-ghost" style="text-decoration:none">📞 Запросить звонок</a>
               </div>
             </div>
             <div class="card" style="padding:16px">
@@ -561,296 +632,14 @@ function goPage(page){
   var screen = document.getElementById('page-'+page);
   if(nav) nav.classList.add('active');
   if(screen) screen.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+  var m = document.querySelector('.main'); if(m) m.scrollTo(0,0);
 }
 
 document.querySelectorAll('.side-link').forEach(function(el){
-  el.addEventListener('click', function(){ goPage(el.dataset.page); });
+  if(el.dataset.page) {
+    el.addEventListener('click', function(){ goPage(el.dataset.page); });
+  }
 });
-
-function scrollToForm(){
-  goPage('about');
-  // Double rAF: wait for browser to paint layout after display:block, then scroll
-  requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
-      var f = document.getElementById('verificationFormCard');
-      if(!f) return;
-      var top = f.getBoundingClientRect().top + window.pageYOffset - 20;
-      window.scrollTo({top: top, behavior: 'smooth'});
-      f.style.transition='box-shadow 0.4s ease';
-      f.style.boxShadow='0 0 0 3px #2970FF, 0 16px 40px rgba(41,112,255,0.3)';
-      setTimeout(function(){ f.style.boxShadow=''; }, 2000);
-    });
-  });
-}
-
-function updateOrgType(){
-  var t = document.getElementById('orgType').value;
-  var docsGroup = document.getElementById('docsGroup');
-  var rsHint = document.getElementById('rsHint');
-  docsGroup.style.display = (t === 'smz' || t === 'ip_npd') ? 'block' : 'none';
-  if (t === 'ooo') rsHint.textContent = 'Для ООО счёт должен начинаться с 40702';
-  else if (t === 'ip' || t === 'ip_npd') rsHint.textContent = 'Для ИП счёт должен начинаться с 40802';
-  else if (t === 'smz') rsHint.textContent = 'Для самозанятого счёт должен начинаться с 40817';
-  else rsHint.textContent = '';
-}
-
-function validateRS(input){
-  var val = input.value;
-  var orgType = document.getElementById('orgType').value;
-  var err = document.getElementById('rsError');
-  if (val.length < 5){ err.style.display='none'; input.style.borderColor=''; return; }
-  var p = val.substring(0,5), valid = true, msg='';
-  if(orgType==='ooo' && p!=='40702'){valid=false;msg='Для ООО Р/С должен начинаться с 40702';}
-  if((orgType==='ip' || orgType==='ip_npd') && p!=='40802'){valid=false;msg='Для ИП Р/С должен начинаться с 40802';}
-  if(orgType==='smz' && p!=='40817'){valid=false;msg='Для СМЗ Р/С должен начинаться с 40817';}
-  err.textContent = msg; err.style.display = valid?'none':'block'; input.style.borderColor = valid?'':'var(--red)';
-}
-
-function showFileName(input, id){
-  if(input.files && input.files[0]) document.getElementById(id).textContent = '✅ ' + input.files[0].name;
-}
-
-function submitForm(e){
-  e.preventDefault();
-  document.getElementById('statusPending').style.display='flex';
-  var btn = e.target.querySelector('button[type="submit"]');
-  btn.disabled = true; btn.textContent='✓ Заявка отправлена';
-  document.getElementById('headerStatusText').textContent = 'Заявка на рассмотрении';
-  setTimeout(function(){ approvePartner(); }, 1500);
-}
-
-function approvePartner(){
-  isVerified = true;
-  document.getElementById('statusPending').style.display='none';
-  document.getElementById('statusApproved').style.display='flex';
-  document.getElementById('headerStatusText').innerHTML = '✅ Подключен';
-  document.getElementById('headerStatusText').style.background = '#ECFDF3';
-  document.getElementById('headerStatusText').style.borderColor = '#A7F3D0';
-  document.getElementById('headerStatusText').style.color = '#027A48';
-  document.getElementById('headerLevelBadge').textContent = 'Старт';
-  document.getElementById('dashPending').style.display='none';
-  document.getElementById('dashApproved').style.display='block';
-  document.getElementById('progressBar').style.width='100%';
-  document.getElementById('progressText').textContent='3 из 3 шагов';
-  document.querySelectorAll('.access-check').forEach(function(el){ el.style.display='none'; });
-  document.querySelectorAll('.verified-only').forEach(function(el){ el.style.display='block'; });
-}
-
-function autoCode(){
-  var word = adjectives[Math.floor(Math.random()*adjectives.length)];
-  var num = Math.floor(Math.random()*90 + 10);
-  document.getElementById('newPromoInput').value = word + num;
-}
-
-function createPromo(){
-  if(!isVerified){ scrollToForm(); return; }
-  var input = document.getElementById('newPromoInput');
-  var code = input.value.trim();
-  var err = document.getElementById('promoCreateError');
-  if(!code || code.length < 3){ err.textContent='Введите промокод — минимум 3 символа'; err.style.display='block'; return; }
-  err.style.display='none';
-  var emptyPromos = document.getElementById('emptyPromos'); if(emptyPromos) emptyPromos.style.display='none';
-  var wrap = document.createElement('div');
-  wrap.className = 'news-item';
-  wrap.innerHTML = '<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:16px;font-weight:800;color:var(--blue);letter-spacing:2px">'+code+'</div><div style="font-size:12px;color:var(--gray);margin-top:4px">Скидка 10% · Использований: 0</div></div><div style="display:flex;gap:8px"><button class="btn btn-ghost" onclick="copyText(''+code+'',this)">📋 Код</button><button class="btn btn-ghost" onclick="togglePromoLinks(this)">🔗 Ссылки ▼</button></div></div><div class="promo-links" style="display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)"><div class="link-list"><div class="link-row"><span class="link-flag">🇷🇺</span><span class="link-url">https://my.winwinbot.com/ru/p/'+code+'</span><button class="icon-btn" onclick="copyText('https://my.winwinbot.com/ru/p/'+code+'',this)">⧉</button></div><div class="link-row"><span class="link-flag">🇬🇧</span><span class="link-url">https://my.winwinbot.com/en/p/'+code+'</span><button class="icon-btn" onclick="copyText('https://my.winwinbot.com/en/p/'+code+'',this)">⧉</button></div><div class="link-row"><span class="link-flag">🇪🇸</span><span class="link-url">https://my.winwinbot.com/es/p/'+code+'</span><button class="icon-btn" onclick="copyText('https://my.winwinbot.com/es/p/'+code+'',this)">⧉</button></div></div></div>';
-  document.getElementById('promosList').insertBefore(wrap, document.getElementById('promosList').firstChild);
-  document.getElementById('promosCount').textContent = document.querySelectorAll('#promosList .news-item').length;
-
-  var emptyLinks = document.getElementById('emptyAdditionalLinks'); if(emptyLinks) emptyLinks.style.display='none';
-  var acc = document.createElement('div');
-  acc.className = 'news-item';
-  acc.innerHTML = '<div onclick="toggleAcc(this)" style="display:flex;justify-content:space-between;gap:10px;align-items:center;cursor:pointer"><div><div style="font-size:15px;font-weight:800;color:var(--blue);letter-spacing:2px">'+code+'</div><div style="font-size:12px;color:var(--gray)">Нажмите, чтобы открыть ссылки для этого промокода</div></div><div style="font-size:14px;color:var(--gray)" class="acc-arrow">▼</div></div><div class="acc-body" style="display:none;margin-top:12px"><div class="link-list"><div class="link-row"><span class="link-flag">🇷🇺</span><span class="link-url">https://my.winwinbot.com/ru/p/'+code+'</span><button class="icon-btn" onclick="event.stopPropagation();copyText('https://my.winwinbot.com/ru/p/'+code+'',this)">⧉</button></div><div class="link-row"><span class="link-flag">🇬🇧</span><span class="link-url">https://my.winwinbot.com/en/p/'+code+'</span><button class="icon-btn" onclick="event.stopPropagation();copyText('https://my.winwinbot.com/en/p/'+code+'',this)">⧉</button></div><div class="link-row"><span class="link-flag">🇪🇸</span><span class="link-url">https://my.winwinbot.com/es/p/'+code+'</span><button class="icon-btn" onclick="event.stopPropagation();copyText('https://my.winwinbot.com/es/p/'+code+'',this)">⧉</button></div></div></div>';
-  document.getElementById('additionalLinksList').insertBefore(acc, document.getElementById('additionalLinksList').firstChild);
-  document.getElementById('additionalLinksCount').textContent = document.querySelectorAll('#additionalLinksList .news-item').length;
-  input.value='';
-}
-
-function togglePromoLinks(btn){
-  var body = btn.closest('.news-item').querySelector('.promo-links');
-  if(body.style.display==='none'){ body.style.display='block'; btn.textContent='🔗 Ссылки ▲'; }
-  else{ body.style.display='none'; btn.textContent='🔗 Ссылки ▼'; }
-}
-
-function toggleAcc(el){
-  var item = el.closest('.news-item');
-  var body = item.querySelector('.acc-body');
-  var arrow = item.querySelector('.acc-arrow');
-  if(body.style.display==='none'){ body.style.display='block'; arrow.textContent='▲'; }
-  else{ body.style.display='none'; arrow.textContent='▼'; }
-}
-
-function copyText(text, btn){
-  navigator.clipboard.writeText(text).catch(function(){});
-  var old = btn.innerHTML || btn.textContent;
-  if(btn.tagName==='BUTTON') btn.innerHTML='✓ Скопировано'; else btn.textContent='✓';
-  btn.style.background='#12B76A'; btn.style.color='#fff'; btn.style.borderColor='#12B76A';
-  setTimeout(function(){ if(btn.tagName==='BUTTON') btn.innerHTML=old; else btn.textContent=old; btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }, 1500);
-}
-
-function copyEl(id, btn){ copyText(document.getElementById(id).textContent, btn); }
-
-// ─── DADATA TOKEN (replace with real) ───────
-var DADATA_TOKEN = 'ВСТАВЬТЕ_ВАШ_ТОКЕН_DADATA';
-
-function dadataLookup(val){
-  var hint = document.getElementById('dadataHint');
-  if(!hint) return;
-  if(val.length < 8){ hint.style.display='none'; return; }
-  // DEMO MODE (mock data for preview; replace fetch below with real API call)
-  var mockResults = {
-    '7707083893': {name:'ПАО «Сбербанк»', ogrn:'1027700132195', address:'117312, г. Москва, ул. Вавилова, д. 19', type:'ooo'},
-    '773601001': {name:'ФНС России', ogrn:'1047707030513', address:'127381, г. Москва, ул. Неглинная, д. 23', type:'ooo'},
-  };
-  var result = mockResults[val];
-  if(result){
-    hint.innerHTML = '<div class="dadata-item" onclick="applyDadata('+JSON.stringify(result)+')">' +
-      '<div class="dadata-name">'+result.name+'</div>' +
-      '<div class="dadata-meta">ОГРН: '+result.ogrn+' · '+result.address+'</div>' +
-    '</div>';
-    hint.style.display = 'block';
-  } else {
-    hint.innerHTML = '<div class="dadata-item" style="color:var(--gray)">Введите ИНН полностью — данные подтянутся из ЕГРЮЛ</div>';
-    hint.style.display = 'block';
-  }
-  /*
-  // REAL API (раскомментируйте при наличии токена):
-  fetch('https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party', {
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Token '+DADATA_TOKEN},
-    body: JSON.stringify({query: val})
-  }).then(r=>r.json()).then(d=>{
-    if(d.suggestions && d.suggestions.length){
-      var s = d.suggestions[0];
-      applyDadata({
-        name: s.value,
-        ogrn: s.data.ogrn,
-        address: s.data.address.value,
-        type: s.data.type === 'INDIVIDUAL' ? 'ip' : 'ooo'
-      });
-    }
-  });
-  */
-}
-
-function applyDadata(d){
-  if(d.name) document.getElementById('orgName').value = d.name;
-  if(d.ogrn) document.getElementById('ogrn').value = d.ogrn;
-  if(d.address) document.getElementById('legalAddress').value = d.address;
-  if(d.type){ var s = document.getElementById('orgType'); if(s) s.value = d.type; updateOrgType(); }
-  document.getElementById('dadataHint').style.display = 'none';
-  var st = document.getElementById('dadataStatus'); if(st) st.style.display = 'inline';
-}
-
-// ─── MODAL ───────────────────────────────────
-// ─── ONBOARDING PROGRESS ─────────────────────
-function setOnboardingStep(step){
-  // step: 1=registered(40%), 2=submitted(90%), 3=approved(100%)
-  var bar = document.getElementById('onboardingBar');
-  var pct = document.getElementById('onboardingPctBadge');
-  var msg = document.getElementById('onboardingMsg');
-  var s2dot = document.getElementById('step2Dot');
-  var s2text = document.getElementById('step2Text');
-  var s3row = document.getElementById('step3Row');
-  var s3dot = document.getElementById('step3Dot');
-  var s3text = document.getElementById('step3Text');
-  if(!bar) return;
-  if(step === 2){
-    bar.style.width = '90%';
-    pct.textContent = '90%';
-    pct.style.color = 'var(--orange)';
-    s2dot.className = 'onboard-dot done'; s2dot.textContent = '✓';
-    s2text.innerHTML = '<strong>Анкета верификации отправлена</strong><div class="small" style="margin-top:3px">Ожидайте подтверждения от менеджера Юрия — обычно до 1 рабочего дня</div>';
-    document.getElementById('step2Row').className = 'onboard-step done';
-    s3row.className = 'onboard-step'; s3dot.className = 'onboard-dot waiting'; s3dot.textContent = '🕐';
-    s3text.innerHTML = '<strong>Ожидаем подтверждения менеджера</strong><div class="small" style="margin-top:3px">Юрий проверит данные и свяжется с вами</div>';
-    msg.innerHTML = 'Сделано 2 из 3 шагов. Ожидайте подтверждения от менеджера.';
-  } else if(step === 3){
-    bar.style.width = '100%';
-    pct.textContent = '100%';
-    pct.style.color = 'var(--green)';
-    s2dot.className = 'onboard-dot done'; s2dot.textContent = '✓';
-    s3row.className = 'onboard-step done'; s3dot.className = 'onboard-dot complete'; s3dot.textContent = '✓';
-    s3text.innerHTML = '<strong>Вы стали партнёром WinWinBot!</strong><div class="small" style="margin-top:3px">Все разделы кабинета открыты — начинайте работу</div>';
-    document.getElementById('onboardingCard').style.background = '#ECFDF3';
-    document.getElementById('onboardingCard').style.borderColor = '#6CE9A6';
-    msg.innerHTML = '🎉 Добро пожаловать в партнёрскую программу WinWinBot!';
-  }
-}
-
-// ─── FORM SUBMIT OVERRIDE ────────────────────
-// Wrap existing submitForm or define it
-var _origSubmit = window.submitForm;
-window.submitForm = function(e){
-  e.preventDefault();
-  var pending = document.getElementById('statusPending');
-  var approved = document.getElementById('statusApproved');
-  if(pending){ pending.style.display = 'block'; }
-  if(approved){ approved.style.display = 'none'; }
-  setOnboardingStep(2);
-  closeVerifyModal();
-};
-
-
-(function(){
-  var days=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
-  var months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-
-  // Draw hour tick marks on SVG
-  var svgNS='http://www.w3.org/2000/svg';
-  var marksG=document.getElementById('hourMarks');
-  if(marksG){
-    for(var i=0;i<12;i++){
-      var ang=i*30*Math.PI/180;
-      var isMain=(i%3===0);
-      var r1=isMain?78:84, r2=96;
-      var x1=100+r1*Math.sin(ang), y1=100-r1*Math.cos(ang);
-      var x2=100+r2*Math.sin(ang), y2=100-r2*Math.cos(ang);
-      var line=document.createElementNS(svgNS,'line');
-      line.setAttribute('x1',x1);line.setAttribute('y1',y1);
-      line.setAttribute('x2',x2);line.setAttribute('y2',y2);
-      line.setAttribute('stroke',isMain?'rgba(255,255,255,0.7)':'rgba(255,255,255,0.25)');
-      line.setAttribute('stroke-width',isMain?'2.5':'1.5');
-      line.setAttribute('stroke-linecap','round');
-      marksG.appendChild(line);
-    }
-  }
-
-  function setRotation(id, deg){
-    var el=document.getElementById(id);
-    if(!el) return;
-    var cx=100,cy=100;
-    var rad=deg*Math.PI/180;
-    var x1=cx, y1=cy;
-    // get original end points
-    var len={'hourHand':55,'minuteHand':72,'secondHand':78};
-    var backLen={'hourHand':15,'minuteHand':15,'secondHand':20};
-    var l=len[id]||60, b=backLen[id]||10;
-    el.setAttribute('x2',cx+l*Math.sin(rad));
-    el.setAttribute('y2',cy-l*Math.cos(rad));
-    el.setAttribute('x1',cx-b*Math.sin(rad));
-    el.setAttribute('y1',cy+b*Math.cos(rad));
-  }
-
-  function tick(){
-    var n=new Date();
-    var h=n.getHours(), m=n.getMinutes(), s=n.getSeconds();
-    var ms=n.getMilliseconds();
-    // Smooth second hand
-    var secDeg=(s+ms/1000)*6;
-    var minDeg=(m+s/60)*6;
-    var hourDeg=(h%12+m/60)*30;
-    setRotation('hourHand', hourDeg);
-    setRotation('minuteHand', minDeg);
-    setRotation('secondHand', secDeg);
-    // Digital
-
-    document.getElementById('clockDate').innerHTML=
-      '<span style="font-size:15px;font-weight:700;color:#fff">'+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+'</span><br>'+
-      days[n.getDay()]+'<br>'+n.getDate()+' '+months[n.getMonth()]+' '+n.getFullYear();
-  }
-  setInterval(tick,50); tick();
-})();
 
 </script>
 
