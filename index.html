@@ -1,5 +1,4 @@
 
-
 <!doctype html>
 <html lang="ru">
 <head>
@@ -194,6 +193,14 @@ input[type="checkbox"] {
   box-shadow: 0 8px 24px rgba(41, 112, 255, 0.3);
 }
 
+
+/* MODAL */
+
+.clock-widget{background:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);border-radius:20px;padding:28px 20px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 12px 32px rgba(15,23,42,.15);margin-bottom:24px;position:relative;overflow:hidden;}
+.clock-widget::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at center,rgba(41,112,255,.15) 0%,transparent 55%);animation:rotateBg 20s linear infinite;}
+@keyframes rotateBg{100%{transform:rotate(360deg)}}
+.clock-time{font-size:52px;font-weight:800;letter-spacing:3px;font-variant-numeric:tabular-nums;background:linear-gradient(to right,#fff,#94A3B8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;position:relative;z-index:1;}
+.clock-date{font-size:14px;color:#94A3B8;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;position:relative;z-index:1;}
 </style>
 </head>
 <body>
@@ -207,7 +214,7 @@ input[type="checkbox"] {
       </div>
     </div>
     <nav class="side-nav">
-      <div class="side-link active" data-page="about"><span class="side-ico">ℹ️</span><span>О программе</span></div>
+      <div class="side-link active" data-page="about"><span class="side-ico">🏠</span><span>Главная</span></div>
       <div class="side-link" data-page="network"><span class="side-ico">🔗</span><span>Промокоды и ссылки</span></div>
       <div class="side-link" data-page="payouts"><span class="side-ico">📥</span><span>Выплаты</span></div>
       <div class="side-link" data-page="materials"><span class="side-ico">🗂️</span><span>Промо-материалы</span></div>
@@ -237,25 +244,41 @@ input[type="checkbox"] {
     <div class="content">
       <section class="page active" id="page-about">
         <div class="banner">
-          <h2>Партнёрский кабинет WinWinBot</h2>
+          <h2>Остался один шаг для становления партнёром WinWinBot</h2>
           <p>Рады, что вы заинтересовались нашей партнёрской программой. Для полного доступа к партнёрской программе пройдите короткую верификацию и воспользуйтесь всеми преимуществами на максимум. Инструкция ниже.</p>
           <div class="banner-actions">
             <button class="btn btn-ghost" onclick="scrollToForm()">📝 Пройти верификацию</button>
           </div>
         </div>
 
-        <div class="kpi-row grid-4">
-          <div class="metric blue"><div class="metric-label">Всего заработано</div><div class="metric-value" id="mTotal">0,00 ₽</div></div>
-          <div class="metric green"><div class="metric-label">Текущий баланс</div><div class="metric-value" id="mBalance">0,00 ₽</div></div>
-          <div class="metric purple"><div class="metric-label">Всего клиентов</div><div class="metric-value" id="mRefs">0</div></div>
-          <div class="metric orange"><div class="metric-label">Выплачено</div><div class="metric-value" id="mPaid">0,00 ₽</div></div>
+        
+        <div class="clock-widget">
+          <div class="clock-time" id="clockTime">00:00:00</div>
+          <div class="clock-date" id="clockDate"></div>
         </div>
 
-        <div class="card" style="margin-bottom:18px">
-          <div class="section-head" style="margin-bottom:12px"><div><div class="section-title">Рост партнёрского уровня</div><div class="section-sub">Показываем, что нужно для перехода на следующий процент</div></div></div>
-          <div class="progress-top"><strong>Ваша ставка 25%</strong><span>До 30%: ещё 2 активных клиента</span></div>
-          <div class="progress"><div style="width:80%;background:linear-gradient(90deg,#2970FF,#4F90FF)"></div></div>
-          <div class="small" style="margin-top:8px">Приведите ещё 2 активных клиента, чтобы получать 30% со всех оплат.</div>
+        <div class="kpi-row grid-4">
+          <div class="metric blue"><div class="metric-label">Всего заработано</div><div class="metric-value" id="mTotal">0,00 ₽</div></div>
+          <div class="metric green"><div class="metric-label">Сумма к выплате</div><div class="metric-value" id="mBalance">0,00 ₽</div></div>
+          <div class="metric purple"><div class="metric-label">Всего клиентов</div><div class="metric-value" id="mRefs">0</div></div>
+          <div class="metric orange"><div class="metric-label">Всего партнёров</div><div class="metric-value" id="mPartners">0</div></div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px" id="onboardingCard">
+          <div class="section-head" style="margin-bottom:16px">
+            <div>
+              <div class="section-title">До становления партнёром осталось:</div>
+              <div class="section-sub">Показываем, что нужно для становления верифицированным партнёром</div>
+            </div>
+            <div id="onboardingPctBadge" style="font-size:22px;font-weight:800;color:var(--blue)">40%</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+            <div class="onboard-step done"><div class="onboard-dot done">✓</div><div><strong>Зарегистрировался в партнёрской программе</strong></div></div>
+            <div class="onboard-step" id="step2Row"><div class="onboard-dot pending" id="step2Dot">2</div><div id="step2Text"><strong>Заполнить анкету верификации</strong><div class="small" style="margin-top:3px">Заполните анкету, чтобы мы могли проверить ваши данные</div></div></div>
+            <div class="onboard-step locked-step" id="step3Row"><div class="onboard-dot locked" id="step3Dot">3</div><div id="step3Text"><strong style="color:var(--gray)">Подтверждение от менеджера</strong><div class="small" style="margin-top:3px">Ожидаем после того, как вы отправите анкету</div></div></div>
+          </div>
+          <div class="progress" style="height:12px;margin-bottom:8px"><div id="onboardingBar" style="width:40%;background:linear-gradient(90deg,#2970FF,#4F90FF);transition:width .6s ease"></div></div>
+          <div id="onboardingMsg" class="small" style="color:var(--gray)">Сделано 1 из 3 шагов. <a href="#" onclick="openVerifyModal();return false;" style="color:var(--blue);font-weight:700">Заполнить анкету →</a></div>
         </div>
 
         <div class="info-grid">
@@ -267,7 +290,7 @@ input[type="checkbox"] {
                   <div class="section-sub">До подключения доступен только ограниченный набор разделов</div>
                 </div>
               </div>
-              <div id="dashPending" class="notice">Сейчас ваша заявка находится на проверке. Пока заявка не одобрена, доступны только: О программе и связь с менеджером. После подключения автоматически откроются разделы Промокоды и ссылки и Выплаты.</div>
+              <div id="dashPending" class="notice">Сейчас ваша заявка находится на проверке. Пока заявка не одобрена, доступны только: Главная и связь с менеджером. После подключения автоматически откроются разделы Промокоды и ссылки и Выплаты.</div>
               <div id="dashApproved" class="notice" style="display:none;background:#ECFDF3;border-color:#A7F3D0;color:#027A48">✅ Добро пожаловать в партнёрскую программу WinWinBot. Все разделы кабинета активированы. Менеджер свяжется с вами для знакомства и дальнейшего плана действий.</div>
               <div style="margin-top:16px" id="dashProgressWrap">
                 <div class="progress-top"><strong>Прогресс подключения</strong><span id="progressText">1 из 3 шагов</span></div>
@@ -307,69 +330,129 @@ input[type="checkbox"] {
         </div>
       
 
+        
+
         <div class="card verify-card" style="margin-top:24px" id="verificationFormCard">
-          <div class="section-head" style="margin-bottom: 24px;">
-            <div style="display:flex; gap:16px; align-items:center;">
+          <div class="section-head" style="margin-bottom:24px;">
+            <div style="display:flex;gap:16px;align-items:center;">
               <div style="width:52px;height:52px;background:var(--blue-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;">📝</div>
               <div>
-                <div class="section-title" style="font-size: 22px; margin-bottom:4px;">Анкета партнёра</div>
-                <div class="section-sub" style="font-size: 14px;">Заполните данные для верификации и подключения к партнёрской программе</div>
+                <div class="section-title" style="font-size:22px;margin-bottom:4px;">Анкета партнёра</div>
+                <div class="section-sub" style="font-size:14px;">Заполните данные для верификации и подключения к партнёрской программе</div>
               </div>
             </div>
           </div>
           <form id="partnerForm" onsubmit="submitForm(event)">
-            <div class="form-grid">
+        <div class="form-grid">
 
-              <div class="form-step"><div class="form-step-num">1</div> Контактные данные (из профиля)</div>
+          <div class="form-step"><div class="form-step-num">1</div> Контактные данные</div>
+          <div class="field full"><label>Имя</label><input type="text" value="Василий" readonly></div>
+          <div class="field"><label>Email</label><input type="email" value="vasily@example.com" readonly></div>
+          <div class="field"><label>Телефон</label><input type="tel" value="+7 900 123-45-67" readonly></div>
+          <div class="field"><label>Тип деятельности</label><input type="text" value="Интегратор / агентство" readonly></div>
+          <div class="field full"><label>Планируемое кол-во клиентов в месяц</label><input type="text" value="11–50" readonly></div>
 
-              <div class="field full"><label>Имя</label><input type="text" value="Василий" readonly></div>
-              <div class="field"><label>Email</label><input type="email" value="vasily@example.com" readonly></div>
-              <div class="field"><label>Телефон</label><input type="tel" value="+7 900 123-45-67" readonly></div>
-              <div class="field"><label>Тип деятельности</label><input type="text" value="Интегратор / агентство" readonly></div>
-              <div class="field full"><label>Планируемое кол-во клиентов в месяц</label><input type="text" value="11–50" readonly></div>
+          <div class="form-step"><div class="form-step-num">2</div> Юридические данные</div>
 
-              <div class="form-step"><div class="form-step-num">2</div> Юридические данные</div>
+          <div class="field full">
+            <label>Тип организации <span class="req">*</span></label>
+            <select id="orgType" onchange="updateOrgType()" required>
+              <option value="">— Выберите —</option>
+              <option value="ooo">ООО</option>
+              <option value="ip">ИП</option>
+              <option value="ip_npd">ИП на НПД</option>
+              <option value="smz">Самозанятый (СМЗ)</option>
+            </select>
+          </div>
 
-              <div class="field full"><label>Тип организации <span class="req">*</span></label><select id="orgType" onchange="updateOrgType()" required><option value="">— Выберите —</option><option value="ooo">ООО</option><option value="ip">ИП</option><option value="ip_npd">ИП на НПД</option><option value="smz">Самозанятый (СМЗ)</option></select></div>
-              <div class="field full"><label>Наименование юр. лица <span class="req">*</span></label><input type="text" id="orgName" placeholder="ООО «...» или ИП Иванов И.И." required></div>
-              <div class="field"><label>ИНН <span class="req">*</span></label><input type="text" id="inn" maxlength="12" placeholder="10 или 12 цифр" oninput="this.value=this.value.replace(/\D/g,'')" required></div>
-              <div class="field"><label>ОГРН / ОГРНИП <span class="req">*</span></label><input type="text" id="ogrn" maxlength="15" placeholder="13 или 15 цифр" oninput="this.value=this.value.replace(/\D/g,'')" required></div>
-              <div class="field full" id="legalAddressGroup"><label>Юридический адрес <span class="req">*</span></label><input type="text" id="legalAddress" placeholder="Для ИП и ООО"></div>
+          <div class="field full field-rel">
+            <label>ИНН <span class="req">*</span>
+              <span id="dadataStatus" style="font-size:11px;font-weight:600;margin-left:8px;color:var(--green);display:none">✓ Данные подтверждены</span>
+            </label>
+            <input type="text" id="inn" maxlength="12" placeholder="Введите ИНН — данные подтянутся автоматически"
+              oninput="this.value=this.value.replace(/\D/g,'');dadataLookup(this.value)"
+              required autocomplete="off">
+            <div class="small" style="margin-top:4px;color:var(--gray)">При вводе ИНН автоматически подтягиваем наименование, ОГРН и адрес из ЕГРЮЛ/ЕГРИП</div>
+            <div class="dadata-hint" id="dadataHint"></div>
+          </div>
 
-              <div class="form-step"><div class="form-step-num">3</div> Банковские реквизиты и контакты</div>
+          <div class="field full">
+            <label>Наименование юр. лица <span class="req">*</span></label>
+            <input type="text" id="orgName" placeholder="Заполнится автоматически или введите вручную" required>
+          </div>
+          <div class="field">
+            <label>ОГРН / ОГРНИП</label>
+            <input type="text" id="ogrn" maxlength="15" placeholder="Заполнится автоматически" oninput="this.value=this.value.replace(/\D/g,'')">
+          </div>
+          <div class="field full" id="legalAddressGroup">
+            <label>Юридический адрес</label>
+            <input type="text" id="legalAddress" placeholder="Заполнится автоматически из ИНН">
+          </div>
 
-              <div class="field"><label>БИК <span class="req">*</span></label><input type="text" id="bik" maxlength="9" placeholder="9 цифр" oninput="this.value=this.value.replace(/\D/g,'')" required></div>
-              <div class="field"><label>Наименование банка <span class="req">*</span></label><input type="text" id="bankName" placeholder="Например: Сбербанк" required></div>
-              <div class="field"><label>Р/С <span class="req">*</span></label><input type="text" id="rs" maxlength="20" placeholder="20 цифр" oninput="this.value=this.value.replace(/\D/g,'');validateRS(this)" required><div id="rsHint" class="small"></div><div id="rsError" class="small" style="display:none;color:var(--red)"></div></div>
-              <div class="field"><label>Кор. счёт <span class="req">*</span></label><input type="text" id="ks" maxlength="20" placeholder="20 цифр" oninput="this.value=this.value.replace(/\D/g,'')" required></div>
-              <div class="field full"><label>Юзернейм в мессенджере <span class="req">*</span></label><input type="text" id="messenger" placeholder="@username или ссылка" required></div>
-              <div class="field full"><label>Сайт / ресурс для привлечения <span class="req">*</span></label><input type="text" id="website" placeholder="https://site.ru или канал / аккаунт" required></div>
+          <div class="form-step"><div class="form-step-num">3</div> Банковские реквизиты и контакты</div>
 
-              <div class="field full" id="docsGroup" style="display:none">
-                <div class="form-step" style="border:none; margin-bottom: 0; padding-bottom: 0; margin-top: 10px;"><div class="form-step-num">📎</div> Документы для СМЗ / ИП на НПД <span class="req">*</span></div>
-                <div class="grid-3" style="margin-top: 12px;">
-                  <div class="upload" onclick="document.getElementById('passportFile').click()"><input id="passportFile" type="file" accept="image/*,.pdf" style="display:none" onchange="showFileName(this,'passportLbl')"><span id="passportLbl">📎 Паспорт (разворот с фото)</span></div>
-                  <div class="upload" onclick="document.getElementById('regFile').click()"><input id="regFile" type="file" accept="image/*,.pdf" style="display:none" onchange="showFileName(this,'regLbl')"><span id="regLbl">📎 Регистрация паспорта</span></div>
-                  <div class="upload" onclick="document.getElementById('taxFile').click()"><input id="taxFile" type="file" accept="image/*,.pdf" style="display:none" onchange="showFileName(this,'taxLbl')"><span id="taxLbl">📎 Справка из «Мой налог»</span></div>
-                </div>
+          <div class="field">
+            <label>БИК <span class="req">*</span></label>
+            <input type="text" id="bik" maxlength="9" placeholder="9 цифр" oninput="this.value=this.value.replace(/\D/g,'')" required>
+          </div>
+          <div class="field">
+            <label>Наименование банка <span class="req">*</span></label>
+            <input type="text" id="bankName" placeholder="Например: Сбербанк" required>
+          </div>
+          <div class="field">
+            <label>Р/С <span class="req">*</span></label>
+            <input type="text" id="rs" maxlength="20" placeholder="20 цифр" oninput="this.value=this.value.replace(/\D/g,'');validateRS(this)" required>
+            <div id="rsHint" class="small"></div>
+            <div id="rsError" class="small" style="display:none;color:var(--red)"></div>
+          </div>
+          <div class="field">
+            <label>Кор. счёт <span class="req">*</span></label>
+            <input type="text" id="ks" maxlength="20" placeholder="20 цифр" oninput="this.value=this.value.replace(/\D/g,'')" required>
+          </div>
+          <div class="field full">
+            <label>Юзернейм в мессенджере (WA / TG / Max) <span class="req">*</span></label>
+            <input type="text" id="messenger" placeholder="@username или ссылка" required>
+          </div>
+          <div class="field full">
+            <label>Сайт / ресурс для привлечения клиентов <span class="req">*</span></label>
+            <input type="text" id="website" placeholder="https://site.ru или ссылка на канал" required>
+          </div>
+
+          <div class="field full" id="docsGroup" style="display:none">
+            <div class="form-step" style="border:none;padding:0;margin-bottom:8px;border-bottom:none"><div class="form-step-num">📎</div> Документы (для СМЗ / ИП на НПД) <span class="req">*</span></div>
+            <div class="grid-3">
+              <div class="upload" onclick="document.getElementById('passportFile').click()">
+                <input id="passportFile" type="file" accept="image/*,.pdf" style="display:none" onchange="showFileName(this,'passportLbl')">
+                <span id="passportLbl">📎 Паспорт (разворот с фото)</span>
+              </div>
+              <div class="upload" onclick="document.getElementById('regFile').click()">
+                <input id="regFile" type="file" accept="image/*,.pdf" style="display:none" onchange="showFileName(this,'regLbl')">
+                <span id="regLbl">📎 Регистрация паспорта</span>
+              </div>
+              <div class="upload" onclick="document.getElementById('taxFile').click()">
+                <input id="taxFile" type="file" accept="image/*,.pdf" style="display:none" onchange="showFileName(this,'taxLbl')">
+                <span id="taxLbl">📎 Справка из «Мой налог»</span>
               </div>
             </div>
-
-            <div class="checks" style="background:#F8FAFC; border: 1px solid #E2E8F0; padding: 20px; margin-top: 24px;">
-              <label class="check"><input type="checkbox" required><span>Даю согласие на обработку персональных данных по 152-ФЗ</span></label>
-              <label class="check"><input type="checkbox" required><span>Принимаю политику конфиденциальности</span></label>
-              <label class="check"><input type="checkbox" required><span>Принимаю оферту партнёрской программы</span></label>
-              <label class="check"><input type="checkbox"><span>Согласен получать рекламные материалы</span></label>
-            </div>
-
-            <button type="submit" class="submit-btn-large" style="margin-top:24px">
-              <span>📨</span> Отправить заявку на верификацию
-            </button>
-            <div id="statusPending" class="status pending">🕐 Заявка на рассмотрении — ответим в течение 1 рабочего дня</div>
-            <div id="statusApproved" class="status ok">✅ Добро пожаловать в партнёрскую программу WinWinBot</div>
-          </form>
+          </div>
         </div>
-</section>
+
+        <div class="checks" style="background:#F8FAFC;border:1px solid #E2E8F0;padding:20px;margin-top:24px;border-radius:12px">
+          <label class="check"><input type="checkbox" required><span>Даю согласие на обработку персональных данных по 152-ФЗ</span></label>
+          <label class="check"><input type="checkbox" required><span>Принимаю политику конфиденциальности</span></label>
+          <label class="check"><input type="checkbox" required><span>Принимаю оферту партнёрской программы</span></label>
+          <label class="check"><input type="checkbox"><span>Согласен получать рекламные материалы</span></label>
+        </div>
+
+        <button type="submit" class="submit-btn-large" style="margin-top:24px">
+          <span>📨</span> Отправить заявку на верификацию
+        </button>
+        <div id="statusPending" class="status pending">🕐 Заявка на рассмотрении — ответим в течение 1 рабочего дня</div>
+        <div id="statusApproved" class="status ok">✅ Добро пожаловать в партнёрскую программу WinWinBot</div>
+      </form>
+        </div>
+
+      </section>
 
       
 
@@ -401,6 +484,14 @@ input[type="checkbox"] {
           </div>
         </div>
       </section>
+      
+
+
+
+      
+
+      
+
       <section class="page" id="page-payouts">
         <div class="access-check" data-lock="true">
           <div class="locked"><div style="font-size:22px">🔒</div><div><strong>Раздел «Выплаты» откроется после подключения</strong><div>Функция выплат доступна только верифицированным партнёрам.</div></div></div>
@@ -431,6 +522,8 @@ input[type="checkbox"] {
         </div>
       </section>
 
+
+      
 
       
 
@@ -608,6 +701,126 @@ function copyText(text, btn){
 }
 
 function copyEl(id, btn){ copyText(document.getElementById(id).textContent, btn); }
+
+// ─── DADATA TOKEN (replace with real) ───────
+var DADATA_TOKEN = 'ВСТАВЬТЕ_ВАШ_ТОКЕН_DADATA';
+
+function dadataLookup(val){
+  var hint = document.getElementById('dadataHint');
+  if(!hint) return;
+  if(val.length < 8){ hint.style.display='none'; return; }
+  // DEMO MODE (mock data for preview; replace fetch below with real API call)
+  var mockResults = {
+    '7707083893': {name:'ПАО «Сбербанк»', ogrn:'1027700132195', address:'117312, г. Москва, ул. Вавилова, д. 19', type:'ooo'},
+    '773601001': {name:'ФНС России', ogrn:'1047707030513', address:'127381, г. Москва, ул. Неглинная, д. 23', type:'ooo'},
+  };
+  var result = mockResults[val];
+  if(result){
+    hint.innerHTML = '<div class="dadata-item" onclick="applyDadata('+JSON.stringify(result)+')">' +
+      '<div class="dadata-name">'+result.name+'</div>' +
+      '<div class="dadata-meta">ОГРН: '+result.ogrn+' · '+result.address+'</div>' +
+    '</div>';
+    hint.style.display = 'block';
+  } else {
+    hint.innerHTML = '<div class="dadata-item" style="color:var(--gray)">Введите ИНН полностью — данные подтянутся из ЕГРЮЛ</div>';
+    hint.style.display = 'block';
+  }
+  /*
+  // REAL API (раскомментируйте при наличии токена):
+  fetch('https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Token '+DADATA_TOKEN},
+    body: JSON.stringify({query: val})
+  }).then(r=>r.json()).then(d=>{
+    if(d.suggestions && d.suggestions.length){
+      var s = d.suggestions[0];
+      applyDadata({
+        name: s.value,
+        ogrn: s.data.ogrn,
+        address: s.data.address.value,
+        type: s.data.type === 'INDIVIDUAL' ? 'ip' : 'ooo'
+      });
+    }
+  });
+  */
+}
+
+function applyDadata(d){
+  if(d.name) document.getElementById('orgName').value = d.name;
+  if(d.ogrn) document.getElementById('ogrn').value = d.ogrn;
+  if(d.address) document.getElementById('legalAddress').value = d.address;
+  if(d.type){ var s = document.getElementById('orgType'); if(s) s.value = d.type; updateOrgType(); }
+  document.getElementById('dadataHint').style.display = 'none';
+  var st = document.getElementById('dadataStatus'); if(st) st.style.display = 'inline';
+}
+
+// ─── MODAL ───────────────────────────────────
+// ─── ONBOARDING PROGRESS ─────────────────────
+function setOnboardingStep(step){
+  // step: 1=registered(40%), 2=submitted(90%), 3=approved(100%)
+  var bar = document.getElementById('onboardingBar');
+  var pct = document.getElementById('onboardingPctBadge');
+  var msg = document.getElementById('onboardingMsg');
+  var s2dot = document.getElementById('step2Dot');
+  var s2text = document.getElementById('step2Text');
+  var s3row = document.getElementById('step3Row');
+  var s3dot = document.getElementById('step3Dot');
+  var s3text = document.getElementById('step3Text');
+  if(!bar) return;
+  if(step === 2){
+    bar.style.width = '90%';
+    pct.textContent = '90%';
+    pct.style.color = 'var(--orange)';
+    s2dot.className = 'onboard-dot done'; s2dot.textContent = '✓';
+    s2text.innerHTML = '<strong>Анкета верификации отправлена</strong><div class="small" style="margin-top:3px">Ожидайте подтверждения от менеджера Юрия — обычно до 1 рабочего дня</div>';
+    document.getElementById('step2Row').className = 'onboard-step done';
+    s3row.className = 'onboard-step'; s3dot.className = 'onboard-dot waiting'; s3dot.textContent = '🕐';
+    s3text.innerHTML = '<strong>Ожидаем подтверждения менеджера</strong><div class="small" style="margin-top:3px">Юрий проверит данные и свяжется с вами</div>';
+    msg.innerHTML = 'Сделано 2 из 3 шагов. Ожидайте подтверждения от менеджера.';
+  } else if(step === 3){
+    bar.style.width = '100%';
+    pct.textContent = '100%';
+    pct.style.color = 'var(--green)';
+    s2dot.className = 'onboard-dot done'; s2dot.textContent = '✓';
+    s3row.className = 'onboard-step done'; s3dot.className = 'onboard-dot complete'; s3dot.textContent = '✓';
+    s3text.innerHTML = '<strong>Вы стали партнёром WinWinBot!</strong><div class="small" style="margin-top:3px">Все разделы кабинета открыты — начинайте работу</div>';
+    document.getElementById('onboardingCard').style.background = '#ECFDF3';
+    document.getElementById('onboardingCard').style.borderColor = '#6CE9A6';
+    msg.innerHTML = '🎉 Добро пожаловать в партнёрскую программу WinWinBot!';
+  }
+}
+
+// ─── FORM SUBMIT OVERRIDE ────────────────────
+// Wrap existing submitForm or define it
+var _origSubmit = window.submitForm;
+window.submitForm = function(e){
+  e.preventDefault();
+  var pending = document.getElementById('statusPending');
+  var approved = document.getElementById('statusApproved');
+  if(pending){ pending.style.display = 'block'; }
+  if(approved){ approved.style.display = 'none'; }
+  setOnboardingStep(2);
+  closeVerifyModal();
+};
+
+
+(function(){
+  var days=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+  var months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  function tick(){
+    var n=new Date();
+    var h=String(n.getHours()).padStart(2,'0');
+    var m=String(n.getMinutes()).padStart(2,'0');
+    var s=String(n.getSeconds()).padStart(2,'0');
+    document.getElementById('clockTime').textContent=h+':'+m+':'+s;
+    document.getElementById('clockDate').textContent=days[n.getDay()]+', '+n.getDate()+' '+months[n.getMonth()]+' '+n.getFullYear();
+  }
+  setInterval(tick,1000); tick();
+})();
+
 </script>
+
+<!-- MODAL: АНКЕТА ВЕРИФИКАЦИИ -->
+
 </body>
 </html>
