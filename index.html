@@ -240,6 +240,46 @@ input[type="checkbox"] {
 }
 .onboard-footer a:hover { opacity: .85; }
 
+
+/* ── TABLES ─────────────────────────────────────────────── */
+.ref-table{width:100%;border-collapse:collapse;font-size:13px}
+.ref-table th{text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#94A3B8;border-bottom:2px solid #F1F5F9}
+.ref-table td{padding:11px 10px;border-bottom:1px solid #F8FAFC;vertical-align:middle}
+.ref-table tr:last-child td{border-bottom:none}
+.ref-table tr:hover td{background:#FAFBFF}
+.link-cell{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#64748B;font-family:monospace}
+.copy-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:14px}
+.copy-btn:hover{background:#EFF6FF}
+
+/* ── BADGES ─────────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.badge.green{background:#ECFDF3;color:#027A48}
+.badge.orange{background:#FFF7ED;color:#B54708}
+.badge.blue{background:#EFF6FF;color:#1D4ED8}
+.badge.gray{background:#F1F5F9;color:#64748B}
+
+/* ── TABS ────────────────────────────────────────────────── */
+.tab-row{display:flex;gap:4px;border-bottom:2px solid #F1F5F9;margin-bottom:16px}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;padding:8px 16px;font-size:14px;font-weight:600;color:#94A3B8;cursor:pointer;border-radius:6px 6px 0 0;transition:.15s}
+.tab-btn:hover{color:#2970FF;background:#EFF6FF}
+.tab-btn.active{color:#2970FF;border-bottom-color:#2970FF}
+
+/* ── GRID-3 ──────────────────────────────────────────────── */
+.grid-3{grid-template-columns:repeat(3,1fr)}
+
+/* ── FILTER SELECT ───────────────────────────────────────── */
+.filter-select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff;color:var(--text);cursor:pointer}
+
+/* ── MATERIALS GRID ──────────────────────────────────────── */
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.mat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px;transition:.15s}
+.mat-card:hover{box-shadow:0 4px 20px rgba(41,112,255,.08);border-color:#BFDBFE}
+.mat-icon{font-size:28px}
+.mat-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#94A3B8}
+.mat-title{font-size:15px;font-weight:700;color:#0F172A}
+.mat-preview{font-size:12px;color:#64748B;line-height:1.5;flex:1}
+.mat-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+
 </style>
 </head>
 <body>
@@ -509,32 +549,122 @@ input[type="checkbox"] {
 
       
       <section class="page" id="page-network">
-        <div class="card access-check" data-lock="true">
-          <div class="locked"><div style="font-size:22px">🔒</div><div><strong>Раздел «Промокоды и ссылки» откроется после подключения</strong><div>Здесь будет список ваших клиентов и партнёров, их статусы, регистрации и начисления. До подключения доступ закрыт.</div></div></div>
-        </div>
-        <div class="verified-only" style="display:none">
-          <div class="card" style="margin-bottom:14px">
-            <div class="section-head"><div><div class="section-title">Мои клиенты</div><div class="section-sub">Клиенты, зарегистрировавшиеся по вашей ссылке или промокоду</div></div></div>
-            <div class="table-wrap">
-              <table class="table"><thead><tr><th>Клиент</th><th>Дата регистрации</th><th>Статус</th><th>Оплата</th><th>Начислено</th></tr></thead><tbody>
-                <tr><td>Алексей К.</td><td>12.05.2026</td><td><span class="badge paid">Оплатил</span></td><td>5 000 ₽</td><td style="font-weight:700;color:#027A48">+1 250 ₽</td></tr>
-                <tr><td>Марина С.</td><td>08.05.2026</td><td><span class="badge active">Активен</span></td><td>5 000 ₽</td><td style="font-weight:700;color:#027A48">+1 250 ₽</td></tr>
-                <tr><td>Дмитрий В.</td><td>01.05.2026</td><td><span class="badge reg">Зарегистрирован</span></td><td>—</td><td>—</td></tr>
-              </tbody></table>
-            </div>
-          </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-head"><div>
+      <div class="section-title">🔗 Промокоды и ссылки</div>
+      <div class="section-sub">Инструменты для привлечения клиентов</div>
+    </div></div>
+    <!-- TABS -->
+    <div class="tab-row" id="networkTabs">
+      <button class="tab-btn active" onclick="showNetTab('links')">Ссылки и промокоды</button>
+      <button class="tab-btn" onclick="showNetTab('refs')">Рефералы</button>
+      <button class="tab-btn" onclick="showNetTab('stats')">Статистика</button>
+    </div>
+  </div>
 
-          <div class="card">
-            <div class="section-head"><div><div class="section-title">Мои партнёры</div><div class="section-sub">Партнёры и рефералы первого уровня</div></div></div>
-            <div class="table-wrap">
-              <table class="table"><thead><tr><th>Партнёр</th><th>Дата регистрации</th><th>Статус</th><th>Клиентов</th><th>Оборот</th></tr></thead><tbody>
-                <tr><td>Алексей К.</td><td>12.05.2026</td><td><span class="badge active">Активный</span></td><td>3</td><td>15 000 ₽</td></tr>
-                <tr><td>Марина С.</td><td>08.05.2026</td><td><span class="badge paid">Верифицирован</span></td><td>1</td><td>5 000 ₽</td></tr>
-              </tbody></table>
-            </div>
-          </div>
+  <!-- TAB: LINKS & PROMO -->
+  <div id="netLinks">
+    <div class="grid-2" style="margin-bottom:16px">
+      <div class="card" style="border-left:4px solid #2970FF">
+        <div class="section-sub" style="margin-bottom:6px">Ваш главный промокод</div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-size:26px;font-weight:900;color:#2970FF;letter-spacing:2px">12BU6</span>
+          <span style="background:#FEF3C7;color:#B45309;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700">Скидка 10%</span>
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="navigator.clipboard.writeText('12BU6');this.textContent='✓ Скопировано!';setTimeout(()=>this.textContent='📋 Копировать',2000)">📋 Копировать</button>
         </div>
-      </section>
+        <div style="margin-top:8px;font-size:13px;color:var(--gray)">Использований: <strong>53</strong></div>
+      </div>
+      <div class="card" style="border-left:4px solid #12B76A">
+        <div class="section-sub" style="margin-bottom:8px">Быстрые действия</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:13px" onclick="openCreatePromo()">+ Создать именной промокод</button>
+          <button class="btn btn-ghost" style="width:100%;justify-content:center;font-size:13px" onclick="openCreateLink()">+ Создать UTM-ссылку</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="section-head"><div><div class="section-title" style="font-size:16px">Мои реферальные ссылки</div></div></div>
+      <table class="ref-table">
+        <thead><tr><th>Флаг</th><th>Ссылка</th><th>Клики</th><th>Рег.</th><th>Оплат</th><th>Доход</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>🇷🇺</td><td class="link-cell">https://my.winwinbot.com/ru/p/12BU6</td><td>142</td><td>18</td><td>7</td><td>4 200 ₽</td><td><button class="copy-btn" onclick="copyLink(this,'https://my.winwinbot.com/ru/p/12BU6')">📋</button></td></tr>
+          <tr><td>🇺🇸</td><td class="link-cell">https://my.winwinbot.com/en/p/12BU6</td><td>38</td><td>4</td><td>1</td><td>900 ₽</td><td><button class="copy-btn" onclick="copyLink(this,'https://my.winwinbot.com/en/p/12BU6')">📋</button></td></tr>
+          <tr><td>🇪🇸</td><td class="link-cell">https://my.winwinbot.com/es/p/12BU6</td><td>12</td><td>1</td><td>0</td><td>0 ₽</td><td><button class="copy-btn" onclick="copyLink(this,'https://my.winwinbot.com/es/p/12BU6')">📋</button></td></tr>
+          <tr><td>🇮🇳</td><td class="link-cell">https://my.winwinbot.com/hi/p/12BU6</td><td>9</td><td>0</td><td>0</td><td>0 ₽</td><td><button class="copy-btn" onclick="copyLink(this,'https://my.winwinbot.com/hi/p/12BU6')">📋</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="section-head"><div><div class="section-title" style="font-size:16px">Мои промокоды</div></div>
+        <button class="btn btn-primary" style="font-size:12px;padding:6px 14px" onclick="openCreatePromo()">+ Создать</button>
+      </div>
+      <table class="ref-table">
+        <thead><tr><th>Промокод</th><th>Условие</th><th>Активаций</th><th>Оплат</th><th>Доход</th><th>Статус</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:#2970FF">12BU6</strong></td><td>Скидка 10%</td><td>53</td><td>22</td><td>13 200 ₽</td><td><span class="badge green">Активен</span></td></tr>
+          <tr><td><strong style="color:#2970FF">SUMMER26</strong></td><td>Скидка 10%</td><td>7</td><td>3</td><td>1 800 ₽</td><td><span class="badge green">Активен</span></td></tr>
+          <tr><td><strong style="color:#94A3B8">PROMO23</strong></td><td>Скидка 10%</td><td>19</td><td>8</td><td>4 800 ₽</td><td><span class="badge gray">Истёк</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: REFERRALS -->
+  <div id="netRefs" style="display:none">
+    <div class="kpi-row grid-4" style="margin-bottom:16px">
+      <div class="metric blue"><div class="metric-label">Всего рефералов</div><div class="metric-value">57</div></div>
+      <div class="metric green"><div class="metric-label">Активных подписок</div><div class="metric-value">29</div></div>
+      <div class="metric purple"><div class="metric-label">Конверсия в оплату</div><div class="metric-value">38%</div></div>
+      <div class="metric orange"><div class="metric-label">Ср. доход с реферала</div><div class="metric-value">856 ₽</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="section-title" style="font-size:15px;margin-bottom:14px">График привлечения рефералов</div>
+      <canvas id="refChart" height="80"></canvas>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div><div class="section-title" style="font-size:16px">Список рефералов</div><div class="section-sub">Всего: 57</div></div>
+      </div>
+      <!-- Filters -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+        <select class="filter-select"><option>Все уровни</option><option>Уровень 1</option><option>Уровень 2</option></select>
+        <select class="filter-select"><option>Все статусы</option><option>Активна</option><option>Истекла</option><option>Триал</option></select>
+        <select class="filter-select"><option>Все источники</option><option>Промокод 12BU6</option><option>Ссылка RU</option><option>Ссылка EN</option></select>
+        <input type="date" class="filter-select" placeholder="Дата от">
+        <input type="date" class="filter-select" placeholder="Дата до">
+      </div>
+      <table class="ref-table">
+        <thead><tr><th>Дата регистрации</th><th>Пользователь</th><th>Дней подписки осталось</th><th>Текущий тариф</th><th>Уровень</th></tr></thead>
+        <tbody>
+          <tr><td>24.05.2026</td><td><div>Алексей</div><div class="section-sub">dj***@rambler.ru</div></td><td>—</td><td>—</td><td>1</td></tr>
+          <tr><td>12.01.2026</td><td><div>Ирина</div><div class="section-sub">cb***@mail.ru</div></td><td>—</td><td>—</td><td>1</td></tr>
+          <tr><td>02.11.2025</td><td><div>Михаил</div><div class="section-sub">mi***@yandex.ru</div></td><td>14</td><td>Pro</td><td>2</td></tr>
+          <tr><td>18.09.2025</td><td><div>Сервис-Плюс</div><div class="section-sub">in***@svc.ru</div></td><td>22</td><td>Business</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: STATS -->
+  <div id="netStats" style="display:none">
+    <div class="card">
+      <div class="section-title" style="font-size:16px;margin-bottom:16px">Воронка по промокодам</div>
+      <table class="ref-table">
+        <thead><tr><th>Промокод / Ссылка</th><th>Клики</th><th>Регистрации</th><th>Оплаты</th><th>Конверсия</th><th>Доход</th></tr></thead>
+        <tbody>
+          <tr><td><strong>12BU6</strong></td><td>201</td><td>22</td><td>22</td><td style="color:#12B76A;font-weight:700">10.9%</td><td>13 200 ₽</td></tr>
+          <tr><td><strong>SUMMER26</strong></td><td>34</td><td>7</td><td>3</td><td style="color:#F79009;font-weight:700">8.8%</td><td>1 800 ₽</td></tr>
+          <tr><td>Ссылка RU</td><td>142</td><td>18</td><td>7</td><td style="color:#F79009;font-weight:700">4.9%</td><td>4 200 ₽</td></tr>
+          <tr><td>Ссылка EN</td><td>38</td><td>4</td><td>1</td><td style="color:#D92D20;font-weight:700">2.6%</td><td>900 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
       
 
 
@@ -544,34 +674,78 @@ input[type="checkbox"] {
       
 
       <section class="page" id="page-payouts">
-        <div class="access-check" data-lock="true">
-          <div class="locked"><div style="font-size:22px">🔒</div><div><strong>Раздел «Выплаты» откроется после подключения</strong><div>Функция выплат доступна только верифицированным партнёрам.</div></div></div>
-        </div>
-        <div class="verified-only" style="display:none">
-          <div class="card" style="margin-bottom:14px;background:var(--green-light);border-color:#6CE9A6">
-            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px">
-              <div>
-                <div style="font-size:13px;color:#065F46;margin-bottom:4px">Доступно к выплате</div>
-                <div style="font-size:28px;font-weight:800;color:#065F46">3 750 <span style="font-size:18px">₽</span></div>
-              </div>
-              <button class="btn btn-primary" style="background:var(--green);font-size:14px">💸 Запросить выплату</button>
-            </div>
-            <div class="small" style="margin-top:12px;color:#065F46">Минимальная сумма для выплаты — 1 000 ₽. Выплата осуществляется на реквизиты, указанные при верификации. Срок обработки — 1–3 рабочих дня.</div>
-          </div>
+  <!-- Финансовая сводка -->
+  <div class="kpi-row grid-2" style="margin-bottom:16px">
+    <div class="metric green">
+      <div class="metric-label">Доступно к выводу</div>
+      <div class="metric-value" style="font-size:28px">5 100 ₽</div>
+      <button class="btn btn-primary" style="margin-top:10px;font-size:12px;padding:7px 16px;justify-content:center;width:100%" onclick="openWithdrawModal()">💳 Запросить выплату</button>
+    </div>
 
-          <div class="card">
-            <div class="section-head"><div><div class="section-title">История выплат</div><div class="section-sub">Журнал всех ваших заявок на вывод средств</div></div></div>
-            <div class="table-wrap">
-              <table class="table">
-                <thead><tr><th>Дата запроса</th><th>Сумма</th><th>Статус</th><th>Комментарий</th></tr></thead>
-                <tbody>
-                  <tr><td colspan="4" style="text-align:center;padding:24px;color:var(--gray)">Выплат пока не было</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div class="metric blue">
+      <div class="metric-label">Выплачено всего</div>
+      <div class="metric-value" style="font-size:28px">24 600 ₽</div>
+      <div style="margin-top:8px;font-size:12px;color:var(--gray)">За всё время</div>
+    </div>
+  </div>
+
+  <!-- Оплата за клиента -->
+  <div class="card" style="margin-bottom:16px;border-left:4px solid #7C3AED">
+    <div class="section-head" style="margin-bottom:14px"><div>
+      <div class="section-title">💳 Оплатить кабинет клиента</div>
+      <div class="section-sub">Используйте партнёрский баланс для оплаты тарифа своего клиента</div>
+    </div></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+      <div class="field" style="flex:1;min-width:180px;margin:0">
+        <label style="font-size:12px;color:var(--gray);display:block;margin-bottom:4px">ID или email клиента</label>
+        <input type="text" placeholder="Например: 12345 или user@mail.ru" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px">
+      </div>
+      <div class="field" style="width:140px;margin:0">
+        <label style="font-size:12px;color:var(--gray);display:block;margin-bottom:4px">Тариф</label>
+        <select style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px">
+          <option>Базовый — 990 ₽</option>
+          <option>Pro — 1 990 ₽</option>
+          <option>Business — 4 990 ₽</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" style="padding:9px 20px">Оплатить из баланса</button>
+    </div>
+  </div>
+
+  <!-- История транзакций -->
+  <div class="card">
+    <div class="section-head"><div><div class="section-title" style="font-size:16px">История транзакций</div></div></div>
+    <div class="tab-row" id="payoutTabs" style="margin-bottom:16px">
+      <button class="tab-btn active" onclick="showPayTab('income')">Начисления</button>
+      <button class="tab-btn" onclick="showPayTab('payouts')">Выплаты и списания</button>
+    </div>
+
+    <div id="payIncome">
+      <table class="ref-table">
+        <thead><tr><th>Дата</th><th>Клиент</th><th>Оплата клиента</th><th>Ваша комиссия</th><th>Начислено</th><th>Статус</th></tr></thead>
+        <tbody>
+          <tr><td>28.05.2026</td><td>Алексей А.</td><td>1 990 ₽</td><td>30%</td><td style="color:#027A48;font-weight:700">597 ₽</td><td><span class="badge green">Доступно</span></td></tr>
+          <tr><td>20.05.2026</td><td>Сервис-Плюс</td><td>4 990 ₽</td><td>30%</td><td style="color:#027A48;font-weight:700">1 497 ₽</td><td><span class="badge green">Доступно</span></td></tr>
+          <tr><td>14.05.2026</td><td>Ирина В.</td><td>990 ₽</td><td>30%</td><td style="color:#F79009;font-weight:700">297 ₽</td><td><span class="badge orange">В холде</span></td></tr>
+          <tr><td>01.05.2026</td><td>Михаил К.</td><td>1 990 ₽</td><td>30%</td><td style="color:#F79009;font-weight:700">597 ₽</td><td><span class="badge orange">В холде</span></td></tr>
+          <tr><td>10.04.2026</td><td>Елена С.</td><td>990 ₽</td><td>30%</td><td style="color:#027A48;font-weight:700">297 ₽</td><td><span class="badge green">Доступно</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="payPayouts" style="display:none">
+      <table class="ref-table">
+        <thead><tr><th>Дата заявки</th><th>Сумма</th><th>Куда</th><th>Статус</th></tr></thead>
+        <tbody>
+          <tr><td>01.05.2026</td><td style="font-weight:700">10 000 ₽</td><td>Карта **** 4521</td><td><span class="badge green">Исполнено</span></td></tr>
+          <tr><td>01.04.2026</td><td style="font-weight:700">7 500 ₽</td><td>Карта **** 4521</td><td><span class="badge green">Исполнено</span></td></tr>
+          <tr><td>15.03.2026</td><td style="font-weight:700">3 200 ₽</td><td>Баланс клиента #8831</td><td><span class="badge green">Исполнено</span></td></tr>
+          <tr><td>28.02.2026</td><td style="font-weight:700">3 900 ₽</td><td>Карта **** 4521</td><td><span class="badge blue">В обработке</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
 
       
@@ -579,15 +753,85 @@ input[type="checkbox"] {
       
 
       <section class="page" id="page-materials">
-        <div class="card">
-          <div class="section-head"><div><div class="section-title">Промо-материалы</div><div class="section-sub">Готовые тексты, баннеры и описания для продвижения</div></div></div>
-          <div class="mat-list">
-            <div class="mat-item"><h4>Базовый набор материалов</h4><p>Короткие тексты для Telegram, email и сайтов, ссылки на баннеры и UTM-шаблоны.</p></div>
-            <div class="mat-item"><h4>Промо-материалы для эфиров</h4><p>Анонсы, шаблон описания эфира, тезисы и блок с CTA на регистрацию по реферальной ссылке.</p></div>
-            <div class="mat-item"><h4>Презентация WinWinBot</h4><p>Актуальная презентация для отправки клиентам и потенциальным партнёрам.</p></div>
-          </div>
-        </div>
-      </section>
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-head"><div>
+      <div class="section-title">🗂️ Промо-материалы</div>
+      <div class="section-sub">Готовые тексты, баннеры и сценарии с вашей ссылкой</div>
+    </div></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <input type="text" placeholder="🔍 Поиск по материалам..." style="flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px">
+      <select class="filter-select"><option>Все форматы</option><option>Тексты</option><option>Баннеры</option><option>Видео</option><option>Презентации</option></select>
+      <select class="filter-select"><option>Все площадки</option><option>Telegram</option><option>ВКонтакте</option><option>Email</option><option>Сайт</option></select>
+    </div>
+  </div>
+
+  <div class="mat-grid">
+
+    <div class="mat-card">
+      <div class="mat-icon">💬</div>
+      <div class="mat-type">Telegram • Текст</div>
+      <div class="mat-title">Анонс партнёрской скидки</div>
+      <div class="mat-preview">«Подключили WinWinBot для автоматизации — и не пожалели. По моей ссылке скидка 10% на первый месяц...»</div>
+      <div class="mat-actions">
+        <button class="btn btn-primary" style="font-size:12px;padding:6px 14px" onclick="copyMaterial(this, 'Telegram-текст с вашей ссылкой: https://my.winwinbot.com/ru/p/12BU6 (промокод 12BU6)')">📋 Скопировать с ссылкой</button>
+      </div>
+    </div>
+
+    <div class="mat-card">
+      <div class="mat-icon">📧</div>
+      <div class="mat-type">Email • Текст</div>
+      <div class="mat-title">Письмо-рекомендация</div>
+      <div class="mat-preview">«Хочу порекомендовать сервис автоматизации продаж WinWinBot. Специально для вас — промокод со скидкой...»</div>
+      <div class="mat-actions">
+        <button class="btn btn-primary" style="font-size:12px;padding:6px 14px" onclick="copyMaterial(this, 'Email-текст с вашей ссылкой: https://my.winwinbot.com/ru/p/12BU6')">📋 Скопировать с ссылкой</button>
+      </div>
+    </div>
+
+    <div class="mat-card">
+      <div class="mat-icon">🖼️</div>
+      <div class="mat-type">Баннер • 1080×1080</div>
+      <div class="mat-title">Баннер для Instagram / VK</div>
+      <div class="mat-preview">Синий квадратный баннер с логотипом WinWinBot и текстом «Автоматизируй продажи»</div>
+      <div class="mat-actions">
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px">⬇ Скачать PNG</button>
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px">⬇ Скачать JPG</button>
+      </div>
+    </div>
+
+    <div class="mat-card">
+      <div class="mat-icon">📊</div>
+      <div class="mat-type">Презентация • PDF</div>
+      <div class="mat-title">Pitch-deck для клиента</div>
+      <div class="mat-preview">10-слайдовая презентация о возможностях WinWinBot для B2B-клиентов. Актуальна на июнь 2026.</div>
+      <div class="mat-actions">
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px">⬇ Скачать PDF</button>
+      </div>
+    </div>
+
+    <div class="mat-card">
+      <div class="mat-icon">🎯</div>
+      <div class="mat-type">Telegram • Кейс</div>
+      <div class="mat-title">Кейс: +340% конверсий за 3 недели</div>
+      <div class="mat-preview">«Клиент из ниши e-commerce подключил WinWinBot и за 3 недели вырос в конверсии на 340%...»</div>
+      <div class="mat-actions">
+        <button class="btn btn-primary" style="font-size:12px;padding:6px 14px" onclick="copyMaterial(this, 'Кейс-текст с вашей ссылкой: https://my.winwinbot.com/ru/p/12BU6')">📋 Скопировать с ссылкой</button>
+      </div>
+    </div>
+
+    <div class="mat-card">
+      <div class="mat-icon">🎬</div>
+      <div class="mat-type">Видео • Reels / Shorts</div>
+      <div class="mat-title">30-секундный видеообзор</div>
+      <div class="mat-preview">Короткое видео с демонстрацией главных функций WinWinBot. Подходит для Reels, Shorts, TikTok.</div>
+      <div class="mat-actions">
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px">▶ Смотреть превью</button>
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px">⬇ Скачать MP4</button>
+      </div>
+    </div>
+
+  </div>
+  <div style="margin-top:12px;font-size:12px;color:var(--gray);text-align:center">⚡ При копировании текстов ваша реферальная ссылка и промокод подставляются автоматически</div>
+</section>
 
       
 
@@ -640,6 +884,112 @@ document.querySelectorAll('.side-link').forEach(function(el){
     el.addEventListener('click', function(){ goPage(el.dataset.page); });
   }
 });
+
+
+// ── TAB SWITCHERS ────────────────────────────────────────
+function showNetTab(tab) {
+  document.getElementById('netLinks').style.display = tab === 'links' ? '' : 'none';
+  document.getElementById('netRefs').style.display  = tab === 'refs'  ? '' : 'none';
+  document.getElementById('netStats').style.display = tab === 'stats' ? '' : 'none';
+  document.querySelectorAll('#networkTabs .tab-btn').forEach(function(b, i){
+    b.classList.toggle('active', ['links','refs','stats'][i] === tab);
+  });
+}
+
+function showPayTab(tab) {
+  document.getElementById('payIncome').style.display  = tab === 'income'  ? '' : 'none';
+  document.getElementById('payPayouts').style.display = tab === 'payouts' ? '' : 'none';
+  document.querySelectorAll('#payoutTabs .tab-btn').forEach(function(b, i){
+    b.classList.toggle('active', ['income','payouts'][i] === tab);
+  });
+}
+
+// ── COPY HELPERS ─────────────────────────────────────────
+function copyLink(btn, url) {
+  navigator.clipboard.writeText(url);
+  btn.textContent = '✓';
+  setTimeout(function(){ btn.textContent = '📋'; }, 2000);
+}
+
+function copyMaterial(btn, text) {
+  navigator.clipboard.writeText(text);
+  var orig = btn.textContent;
+  btn.textContent = '✓ Скопировано!';
+  btn.style.background = '#027A48';
+  setTimeout(function(){ btn.textContent = orig; btn.style.background = ''; }, 2000);
+}
+
+// ── SIMPLE REFERRAL CHART ────────────────────────────────
+(function(){
+  var canvas = document.getElementById('refChart');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var months = ['Дек','Янв','Фев','Мар','Апр','Май'];
+  var regs =   [3, 8, 12, 7, 14, 13];
+  var pays =   [1, 3,  5, 3,  6,  7];
+  var W = canvas.offsetWidth || 700;
+  var H = 160;
+  canvas.width = W; canvas.height = H;
+  var pad = {l:30, r:20, t:20, b:30};
+  var chartW = W - pad.l - pad.r;
+  var chartH = H - pad.t - pad.b;
+  var max = Math.max(...regs) + 2;
+  var step = chartW / (months.length - 1);
+
+  // Grid
+  ctx.strokeStyle = '#F1F5F9'; ctx.lineWidth = 1;
+  for(var y = 0; y <= 4; y++){
+    var yp = pad.t + chartH - (y/4)*chartH;
+    ctx.beginPath(); ctx.moveTo(pad.l, yp); ctx.lineTo(pad.l + chartW, yp); ctx.stroke();
+    ctx.fillStyle = '#94A3B8'; ctx.font = '11px system-ui';
+    ctx.fillText(Math.round((y/4)*max), 2, yp + 4);
+  }
+
+  // Lines
+  function drawLine(data, color, fill){
+    ctx.beginPath();
+    data.forEach(function(v, i){
+      var x = pad.l + i * step;
+      var y = pad.t + chartH - (v/max)*chartH;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    if(fill){
+      ctx.lineTo(pad.l + (data.length-1)*step, pad.t + chartH);
+      ctx.lineTo(pad.l, pad.t + chartH);
+      ctx.closePath();
+      ctx.fillStyle = fill; ctx.fill();
+      ctx.beginPath();
+      data.forEach(function(v, i){
+        var x = pad.l + i * step;
+        var y = pad.t + chartH - (v/max)*chartH;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      });
+    }
+    ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();
+    // Dots
+    data.forEach(function(v, i){
+      var x = pad.l + i * step;
+      var y = pad.t + chartH - (v/max)*chartH;
+      ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI*2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+    });
+  }
+
+  drawLine(regs, '#2970FF', 'rgba(41,112,255,0.07)');
+  drawLine(pays, '#12B76A', null);
+
+  // X labels
+  ctx.fillStyle = '#94A3B8'; ctx.font = '11px system-ui'; ctx.textAlign = 'center';
+  months.forEach(function(m, i){ ctx.fillText(m, pad.l + i*step, H - 6); });
+
+  // Legend
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#2970FF'; ctx.fillRect(W - 160, 4, 10, 10);
+  ctx.fillStyle = '#64748B'; ctx.fillText('Регистрации', W - 146, 13);
+  ctx.fillStyle = '#12B76A'; ctx.fillRect(W - 70, 4, 10, 10);
+  ctx.fillStyle = '#64748B'; ctx.fillText('Оплаты', W - 56, 13);
+})();
 
 </script>
 
