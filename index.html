@@ -1,5 +1,7 @@
 
 
+
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -194,10 +196,6 @@ input[type="checkbox"] {
   box-shadow: 0 8px 24px rgba(41, 112, 255, 0.3);
 }
 
-
-.side-link-locked { opacity: 0.42; cursor: not-allowed !important; pointer-events: none; }
-.side-lock { margin-left: auto; font-size: 11px; opacity: 0.85; }
-
 </style>
 </head>
 <body>
@@ -212,11 +210,11 @@ input[type="checkbox"] {
     </div>
     <nav class="side-nav">
       <div class="side-link active" data-page="about"><span class="side-ico">🏠</span><span>Главная</span></div>
-      <div class="side-link side-link-locked"><span class="side-ico">🔗</span><span>Промокоды и ссылки</span><span class="side-lock">🔒</span></div>
-      <div class="side-link side-link-locked"><span class="side-ico">📥</span><span>Выплаты</span><span class="side-lock">🔒</span></div>
-      <div class="side-link side-link-locked"><span class="side-ico">🗂️</span><span>Промо-материалы</span><span class="side-lock">🔒</span></div>
+      <div class="side-link" data-page="links"><span class="side-ico">🔗</span><span>Промокоды и ссылки</span><span style="font-size:11px;opacity:.6;margin-left:auto">🔒</span></div>
+      <div class="side-link" data-page="payouts"><span class="side-ico">📥</span><span>Выплаты</span><span style="font-size:11px;opacity:.6;margin-left:auto">🔒</span></div>
+      <div class="side-link" data-page="materials"><span class="side-ico">🗂️</span><span>Промо-материалы</span><span style="font-size:11px;opacity:.6;margin-left:auto">🔒</span></div>
       <div class="side-link" data-page="manager"><span class="side-ico">💬</span><span>Связаться с менеджером</span></div>
-      <a href="https://t.me/+eH7ROvNjA61iNTEy" target="_blank" rel="noopener" class="side-link" style="text-decoration:none;"><span class="side-ico">👥</span><span>Чат партнеров</span></a>
+      <a href="https://t.me/+eH7ROvNjA61iNTEy" target="_blank" class="side-link" style="text-decoration:none"><span class="side-ico">👥</span><span>Чат партнеров</span></a>
     </nav>
     <div class="sidebar-footer">ID партнёра: 73257</div>
   </aside>
@@ -242,16 +240,15 @@ input[type="checkbox"] {
     <div class="content">
       <section class="page active" id="page-about">
         <div class="banner">
-          <h2>Партнёрский кабинет WinWinBot</h2>
-          <p>Рады, что вы заинтересовались нашей партнёрской программой. Для полного доступа к партнёрской программе пройдите короткую верификацию и воспользуйтесь всеми преимуществами на максимум. Инструкция ниже.</p>
+          <h2>Это партнёрский кабинет WinWinBot</h2>
+          <p>Рады, что вы заинтересовались нашей партнёрской программой. Для полного доступа к партнёрской программе заполните анкету и после одобрения воспользуйтесь всеми преимуществами на максимум. Инструкция ниже.</p>
           <div class="banner-actions">
             <button class="btn btn-ghost" onclick="scrollToForm()">📝 Пройти верификацию</button>
           </div>
         </div>
 
         
-
-        
+        </div>
 
         <div class="info-grid">
           <div>
@@ -259,7 +256,7 @@ input[type="checkbox"] {
               <div class="section-head">
                 <div>
                   <div class="section-title">Статус подключения к программе</div>
-                  <div class="section-sub">До подключения доступен только ограниченный набор разделов</div>
+                  
                 </div>
               </div>
               <div id="dashPending" class="notice">Сейчас ваша заявка находится на проверке. Пока заявка не одобрена, доступны только: О программе, Обучение и связь с менеджером. После подключения автоматически откроются разделы Моя партнерская сеть, Финансы и Выплаты.</div>
@@ -302,17 +299,8 @@ input[type="checkbox"] {
         </div>
       
 
-        <div class="card verify-card" style="margin-top:24px" id="verificationFormCard">
-          <div class="section-head" style="margin-bottom: 24px;">
-            <div style="display:flex; gap:16px; align-items:center;">
-              <div style="width:52px;height:52px;background:var(--blue-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;">📝</div>
-              <div>
-                <div class="section-title" style="font-size: 22px; margin-bottom:4px;">Анкета партнёра</div>
-                <div class="section-sub" style="font-size: 14px;">Заполните данные для верификации и подключения к партнёрской программе</div>
-              </div>
-            </div>
-          </div>
-          <div style="margin-top:24px" id="verificationFormCard"><a href="#" onclick="return false;" style="
+        <div style="margin-top:24px" id="verificationFormCard">
+  <a href="#" onclick="return false;" style="
     display:flex;
     align-items:center;
     justify-content:center;
@@ -328,9 +316,9 @@ input[type="checkbox"] {
     text-decoration:none;
     transition:transform 0.2s, box-shadow 0.2s;
   " onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(41,112,255,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(41,112,255,0.25)'">
-    <span style="font-size:22px">📨</span> Отправить заявку на верификацию
-  </a></div>
-        </div>
+    <span style="font-size:22px">📨</span> Заполнить заявку на верификацию
+  </a>
+</div>
 </section>
 
       
