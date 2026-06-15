@@ -1,7 +1,5 @@
 
 
-
-
 <!doctype html>
 <html lang="ru">
 <head>
@@ -23,8 +21,8 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--text);background:var(--bg)}
 a{text-decoration:none}
 button{font-family:inherit}
-.app{display:flex;min-height:100vh}
-.sidebar{width:262px;background:linear-gradient(180deg,#0F172A 0%,#111B34 100%);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;padding:18px 14px}
+.app{display:flex;min-height:calc(100vh - 52px)}
+.sidebar{width:262px;background:linear-gradient(180deg,#0F172A 0%,#111B34 100%);color:#fff;display:flex;flex-direction:column;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;padding:18px 14px}
 .logo{display:flex;align-items:center;gap:10px;padding:8px 10px 18px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}
 .logo-mark{width:42px;height:42px;border-radius:11px;background:#1D4ED8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
 .logo-text{font-size:18px;font-weight:800;letter-spacing:.2px}
@@ -196,9 +194,203 @@ input[type="checkbox"] {
   box-shadow: 0 8px 24px rgba(41, 112, 255, 0.3);
 }
 
+
+.side-link-locked { opacity: 0.42; cursor: not-allowed !important; pointer-events: none; }
+.side-lock { margin-left: auto; font-size: 11px; opacity: 0.85; }
+
+
+/* ── TOP HEADER BAR ─────────────────────────────────────── */
+.top-header {
+  background: #0F172A;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  height: 52px;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.th-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  margin-right: 32px;
+  flex-shrink: 0;
+}
+.th-brand-ico {
+  width: 28px; height: 28px;
+  background: #1D4ED8;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+}
+.th-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+.th-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: rgba(255,255,255,.72);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: .15s;
+}
+.th-nav-link:hover {
+  background: rgba(255,255,255,.07);
+  color: #fff;
+}
+.th-nav-link svg { flex-shrink: 0; }
+
+/* User pill в хедере */
+.th-user {
+  position: relative;
+  margin-left: auto;
+}
+.th-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,.18);
+  border-radius: 10px;
+  padding: 6px 12px 6px 8px;
+  cursor: pointer;
+  color: #fff;
+  transition: .15s;
+  user-select: none;
+}
+.th-user-pill:hover {
+  border-color: rgba(255,255,255,.35);
+  background: rgba(255,255,255,.05);
+}
+.th-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #1D4ED8;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.th-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.th-user-name { font-size: 14px; font-weight: 700; }
+.th-user-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+}
+.th-user-meta span { display: flex; align-items: center; gap: 4px; }
+.th-chevron { font-size: 11px; color: rgba(255,255,255,.55); margin-left: 4px; transition: transform .2s; }
+.th-user-pill.open .th-chevron { transform: rotate(180deg); }
+
+/* Dropdown */
+.th-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: #fff;
+  border: 1px solid #E4E7EC;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(16,24,40,.14);
+  padding: 6px;
+  z-index: 200;
+}
+.th-dropdown.open { display: block !important; }
+.th-dd-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #101828;
+  cursor: pointer;
+  text-decoration: none;
+  transition: .12s;
+}
+.th-dd-item:hover { background: #F5F7FF; }
+.th-dd-item.danger { color: #D92D20; }
+.th-dd-item.danger:hover { background: #FEF3F2; }
+.th-dd-sep { height: 1px; background: #F1F5F9; margin: 4px 0; }
+
 </style>
 </head>
 <body>
+<header class="top-header">
+  <a class="th-brand" href="#">
+    <div class="th-brand-ico">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="rgba(255,255,255,.5)"/><rect x="3" y="13" width="8" height="8" rx="2" fill="rgba(255,255,255,.5)"/><rect x="13" y="13" width="8" height="8" rx="2" fill="rgba(255,255,255,.5)"/></svg>
+    </div>
+    WinWinBot
+  </a>
+  <nav class="th-nav">
+    <a class="th-nav-link" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Мои боты
+    </a>
+    <a class="th-nav-link" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      База знаний
+    </a>
+    <a class="th-nav-link" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Чат технической поддержки
+    </a>
+  </nav>
+
+  <div class="th-user" id="thUser" style="position:relative;margin-left:auto;">
+    <button id="thUserPill" type="button" style="display:flex;align-items:center;gap:10px;background:transparent;border:1.5px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 12px 6px 8px;cursor:pointer;color:#fff;outline:none;font-family:inherit;">
+      <div style="width:32px;height:32px;border-radius:50%;background:#1D4ED8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;">С</div>
+      <div style="text-align:left;">
+        <div style="font-size:14px;font-weight:700;color:#fff;">{{ИМЯ}}</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.65);">
+          <span>💳 0</span>
+          <span>📅 0</span>
+        </div>
+      </div>
+      <span id="thChevron" style="font-size:11px;color:rgba(255,255,255,.6);margin-left:4px;">▾</span>
+    </button>
+    <div id="thDropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;min-width:210px;background:#fff;border:1px solid #E4E7EC;border-radius:12px;box-shadow:0 8px 32px rgba(16,24,40,.18);padding:6px;z-index:9999;">
+      <a href="#" class="dd-item" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:500;color:#101828;text-decoration:none;" onmouseover="this.style.background='#F5F7FF'" onmouseout="this.style.background=''">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Оплатить
+      </a>
+      <a href="#" class="dd-item" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:500;color:#101828;text-decoration:none;" onmouseover="this.style.background='#F5F7FF'" onmouseout="this.style.background=''">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Настройки
+      </a>
+      <a href="#" class="dd-item" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:500;color:#101828;text-decoration:none;" onmouseover="this.style.background='#F5F7FF'" onmouseout="this.style.background=''">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Партнёрская программа
+      </a>
+      <div style="height:1px;background:#F1F5F9;margin:4px 0;"></div>
+      <a href="#" class="dd-item" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:500;color:#D92D20;text-decoration:none;" onmouseover="this.style.background='#FEF3F2'" onmouseout="this.style.background=''">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Выход
+      </a>
+    </div>
+  </div>
+</header>
+
 <div class="app">
   <aside class="sidebar">
     <div class="logo">
@@ -210,45 +402,37 @@ input[type="checkbox"] {
     </div>
     <nav class="side-nav">
       <div class="side-link active" data-page="about"><span class="side-ico">🏠</span><span>Главная</span></div>
-      <div class="side-link" data-page="links"><span class="side-ico">🔗</span><span>Промокоды и ссылки</span><span style="font-size:11px;opacity:.6;margin-left:auto">🔒</span></div>
-      <div class="side-link" data-page="payouts"><span class="side-ico">📥</span><span>Выплаты</span><span style="font-size:11px;opacity:.6;margin-left:auto">🔒</span></div>
-      <div class="side-link" data-page="materials"><span class="side-ico">🗂️</span><span>Промо-материалы</span><span style="font-size:11px;opacity:.6;margin-left:auto">🔒</span></div>
+      <div class="side-link side-link-locked"><span class="side-ico">🔗</span><span>Промокоды и ссылки</span><span class="side-lock">🔒</span></div>
+      <div class="side-link side-link-locked"><span class="side-ico">📥</span><span>Выплаты</span><span class="side-lock">🔒</span></div>
+      <div class="side-link side-link-locked"><span class="side-ico">🗂️</span><span>Промо-материалы</span><span class="side-lock">🔒</span></div>
       <div class="side-link" data-page="manager"><span class="side-ico">💬</span><span>Связаться с менеджером</span></div>
-      <a href="https://t.me/+eH7ROvNjA61iNTEy" target="_blank" class="side-link" style="text-decoration:none"><span class="side-ico">👥</span><span>Чат партнеров</span></a>
+      <a href="https://t.me/+eH7ROvNjA61iNTEy" target="_blank" rel="noopener" class="side-link" style="text-decoration:none;"><span class="side-ico">👥</span><span>Чат партнеров</span></a>
     </nav>
     <div class="sidebar-footer">ID партнёра: 73257</div>
   </aside>
 
   <main class="main">
-    <div class="topbar">
-      <div class="top-title">
-        <h1>Добро пожаловать, Василий</h1>
-        <p>Ваш статус: <span id="headerStatusText" style="display:inline-flex;align-items:center;gap:6px;background:#FFF7ED;border:1px solid #FED7AA;color:#B54708;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700;margin-left:6px;box-shadow:0 1px 2px rgba(16,24,40,.04);">🕐 Заявка на рассмотрении</span></p>
-      </div>
-      <div class="top-user">
-        <div class="user-pill">
-          <div class="avatar">В</div>
-          <div>
-            <div style="font-size:14px;font-weight:700">Василий</div>
-            <div style="font-size:12px;color:var(--gray)">Партнёр WinWinBot</div>
-          </div>
-          <div class="level-badge" id="headerLevelBadge">На проверке</div>
-        </div>
-      </div>
-    </div>
+
 
     <div class="content">
-      <section class="page active" id="page-about">
+      <div style="margin: 0 -28px 24px -28px;background:#fff;border-bottom:1px solid #E4E7EC;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:20px;font-weight:800;color:#101828;">Добро пожаловать, {{ИМЯ}} 👋</div>
+          <div style="font-size:14px;color:#667085;margin-top:4px;">Ваш статус: <span style="background:#FFF7ED;color:#C4550A;border:1px solid #FED7AA;border-radius:6px;padding:2px 10px;font-weight:600;font-size:13px;">🕐 Заявка на рассмотрении</span></div>
+        </div>
+      </div>
+            <section class="page active" id="page-about">
         <div class="banner">
-          <h2>Это партнёрский кабинет WinWinBot</h2>
-          <p>Рады, что вы заинтересовались нашей партнёрской программой. Для полного доступа к партнёрской программе заполните анкету и после одобрения воспользуйтесь всеми преимуществами на максимум. Инструкция ниже.</p>
+          <h2>Партнёрский кабинет WinWinBot</h2>
+          <p>Рады, что вы заинтересовались нашей партнёрской программой. Для полного доступа к партнёрской программе пройдите короткую верификацию и воспользуйтесь всеми преимуществами на максимум. Инструкция ниже.</p>
           <div class="banner-actions">
             <button class="btn btn-ghost" onclick="scrollToForm()">📝 Пройти верификацию</button>
           </div>
         </div>
 
         
-        </div>
+
+        
 
         <div class="info-grid">
           <div>
@@ -256,7 +440,7 @@ input[type="checkbox"] {
               <div class="section-head">
                 <div>
                   <div class="section-title">Статус подключения к программе</div>
-                  
+                  <div class="section-sub">До подключения доступен только ограниченный набор разделов</div>
                 </div>
               </div>
               <div id="dashPending" class="notice">Сейчас ваша заявка находится на проверке. Пока заявка не одобрена, доступны только: О программе, Обучение и связь с менеджером. После подключения автоматически откроются разделы Моя партнерская сеть, Финансы и Выплаты.</div>
@@ -299,8 +483,9 @@ input[type="checkbox"] {
         </div>
       
 
-        <div style="margin-top:24px" id="verificationFormCard">
-  <a href="#" onclick="return false;" style="
+        <div class="card verify-card" style="margin-top:24px" id="verificationFormCard">
+          
+          <div style="margin-top:24px" id="verificationFormCard"><a href="#" onclick="return false;" style="
     display:flex;
     align-items:center;
     justify-content:center;
@@ -316,9 +501,9 @@ input[type="checkbox"] {
     text-decoration:none;
     transition:transform 0.2s, box-shadow 0.2s;
   " onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(41,112,255,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(41,112,255,0.25)'">
-    <span style="font-size:22px">📨</span> Заполнить заявку на верификацию
-  </a>
-</div>
+    <span style="font-size:22px">📨</span> Отправить заявку на верификацию
+  </a></div>
+        </div>
 </section>
 
       
@@ -620,6 +805,33 @@ function copyText(text, btn){
 }
 
 function copyEl(id, btn){ copyText(document.getElementById(id).textContent, btn); }
+
+
+
+
+
+
+</script>
+<script>
+// Dropdown - простейший надёжный вариант
+document.getElementById('thUserPill').onclick = function(e) {
+  e.stopPropagation();
+  var d = document.getElementById('thDropdown');
+  var c = document.getElementById('thChevron');
+  if (d.style.display === 'block') {
+    d.style.display = 'none';
+    c.textContent = '▾';
+  } else {
+    d.style.display = 'block';
+    c.textContent = '▴';
+  }
+};
+document.addEventListener('click', function() {
+  var d = document.getElementById('thDropdown');
+  var c = document.getElementById('thChevron');
+  if (d) { d.style.display = 'none'; }
+  if (c) { c.textContent = '▾'; }
+});
 </script>
 </body>
 </html>
